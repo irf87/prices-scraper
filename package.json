@@ -1,0 +1,21 @@
+{
+  "name": "prices-scraper",
+  "version": "1.0.0",
+  "description": "Scraper to find item's prices",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "start-server": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "irf87",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "better-sqlite3": "^7.5.0",
+    "body-parser": "^1.19.2",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.3"
+  }
+}
