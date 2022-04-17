@@ -1,10 +1,12 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./modules/scraped/controller');
+const DomAnalyzer = require('./utils/domAnalyzer');
 
 let toScraping = [];
 let cont = 0;
 let arrayLength = 0;
+
 scraperCtrl.getEnables().then((rows) => {
   if (rows.length > 0) {
     toScraping = rows;
@@ -13,36 +15,41 @@ scraperCtrl.getEnables().then((rows) => {
   }
 });
 
+const executeScraping = async (rules, cont) => {
+  if (cont >= arrayLength) return;
+  try {
+    console.log(rules.url_to_scrape);
+    const { data, error } = await axios(rules.url_to_scrape);
+    if (error) {
+      cont ++;
+      executeScraping(toScraping[cont], cont);
+      return;
+    }
+    const $ = cheerio.load(data);
+    const analyzer = new DomAnalyzer($, data);
 
-const executeScraping = (rules, cont) => {
-  if(cont < arrayLength) {
-    axios(rules.url_to_scrape)
-    .then(response => {
-      const html = response.data;
-      const $ = cheerio.load(html);
-      $(rules.price_dom_selector, html).each(function() {
-        const price = $(this).text();
-        const number = Number(price.replace(/[^0-9.-]+/g,""));
-        console.log(`number ${number}`);
-        if (number >= rules.notify_price_more_equal_than || number <= rules.notify_price_smaller_equal_than) {
-          console.log('AVISAR');
-        }
-        if (rules.stock_dom_selector) {
-          $(rules.stock_dom_selector, html).each(function() {
-            const stock = $(this).text();
-            console.log(stock);
-            cont ++;
-            executeScraping(toScraping[cont], cont);
-          });
-        } else {
-          cont ++;
-          executeScraping(toScraping[cont], cont);
-        }
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    });    
+    const promisePrice = new Promise((resolve) => {
+      if (!rules.price_dom_selector) return resolve();
+      analyzer.getPrice(rules.price_dom_selector, resolve);
+    });
+    const promiseStock = new Promise((resolve) => {
+      if (!rules.stock_dom_selector) return resolve();
+      analyzer.getStock(rules.stock_dom_selector, resolve);
+    });
+
+    const promiseAvailability = new Promise((resolve) => {
+      if (!rules.availability_dom_selector) return resolve();
+      analyzer.getAvailability(rules.stock_dom_selector, resolve);
+    });
+
+    await promisePrice;
+    await promiseStock;
+    await promiseAvailability;
+
+    cont ++;
+    executeScraping(toScraping[cont], cont);
+    
+  } catch (error) {
+    console.error(error);
   }
 }
-
