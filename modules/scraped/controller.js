@@ -1,6 +1,9 @@
 const dbInstance = require('../../model/sqliteController');
 
 const create = async (params) => {
+  const today = new Date();
+  params.create_at = today.toISOString();
+  params.update_at = '';
   const newScraped = dbInstance.prepareInsert('product_scraped', params);
   const info = newScraped.run(...Object.values(params));
   return { success: info.changes >= 1 ? true : false };

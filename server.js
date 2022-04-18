@@ -3,15 +3,11 @@ const express = require('express'),
 	path = require('path'),
 	app = express();
 
-	// const db = require('./model/sqliteController');
-// const filesTools = require('./tools/fileTool');
-/*const xml = require('./tools/readXls');
-xml.readFile();*/
-
 // require('dotenv').config();
 // --------- CARGAR VISTAS --------- //
 const productsUri = require('./modules/products/view');
 const scraperUri = require('./modules/scraped/view');
+const notificationsUri = require('./modules/notifications/view');
 
 const port = process.env._PORT || 8081;
 
@@ -35,6 +31,7 @@ console.log(`ruta ${__dirname}`);
 
 app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);
+app.use('/api/notifications', notificationsUri);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,13 +45,3 @@ app.use(function(req, res, next) {
 
 app.listen(port);
 console.log("Running on " + port);
-
-//------FUNCIONES INICIALES----
-// setTimeout(createFolders, 3500);
-
-// function createFolders(){
-//   //Si no existen las carpetas necesarias, el sistema las crea
-//   console.info("*** Verify folder structure ***");
-// 	filesTools.createFolder('','public');
-// 	//filesTools.createFolder('public/','package');
-// }
