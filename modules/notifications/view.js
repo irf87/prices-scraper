@@ -12,8 +12,8 @@ const express = require('express'),
     });
   });
 
-  router.get('/',(req, res) => {
-    ctrl.get().then((respond) => {
+  router.get('/:id?',(req, res) => {
+    ctrl.get(req.params?.id).then((respond) => {
       res.status(200).send(respond);
     })
     .catch((e) => {

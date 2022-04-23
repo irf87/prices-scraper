@@ -10,8 +10,11 @@ const create = async (params) =>  {
   return { success: info.changes >= 1 ? true : false };
 }
 
-const get = async () => {
-  const query = `SELECT * FROM scraper_notifications`;
+const get = async (id) => {
+  let query = `SELECT * FROM scraper_notifications`;
+  if (id) {
+    query += ` where product_scraped_id = ${id}`;
+  }
   const row = dbInstance.execute(query);
   return row.all();
 }

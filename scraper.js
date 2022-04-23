@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./modules/scraped/controller');
+const scraperNotifications = require('./modules/notifications/controller');
 const DomAnalyzer = require('./utils/domAnalyzer');
 
 let toScraping = [];
@@ -15,11 +16,18 @@ scraperCtrl.getEnables().then((rows) => {
   }
 });
 
-const executeScraping = async (rules, cont) => {
+const executeScraping = async (scraper, cont) => {
   if (cont >= arrayLength) return;
   try {
-    console.log(rules.url_to_scrape);
-    const { data, error } = await axios(rules.url_to_scrape);
+    console.log(scraper.url_to_scrape);
+    const [rules] = await scraperNotifications.get(scraper.id);
+    if (rules typeof === 'object' && rules?.length > 0) {
+      cont ++;
+      executeScraping(toScraping[cont], cont);
+      return;
+    }
+
+    const { data, error } = await axios(scraper.url_to_scrape);
     if (error) {
       cont ++;
       executeScraping(toScraping[cont], cont);
@@ -29,17 +37,17 @@ const executeScraping = async (rules, cont) => {
     const analyzer = new DomAnalyzer($, data);
 
     const promisePrice = new Promise((resolve) => {
-      if (!rules.price_dom_selector) return resolve();
-      analyzer.getPrice(rules.price_dom_selector, resolve);
+      if (!scraper.price_dom_selector) return resolve();
+      analyzer.getPrice(scraper.price_dom_selector, resolve);
     });
     const promiseStock = new Promise((resolve) => {
-      if (!rules.stock_dom_selector) return resolve();
-      analyzer.getStock(rules.stock_dom_selector, resolve);
+      if (!scraper.stock_dom_selector) return resolve();
+      analyzer.getStock(scraper.stock_dom_selector, resolve);
     });
 
     const promiseAvailability = new Promise((resolve) => {
-      if (!rules.availability_dom_selector) return resolve();
-      analyzer.getAvailability(rules.stock_dom_selector, resolve);
+      if (!scraper.availability_dom_selector) return resolve();
+      analyzer.getAvailability(scraper.stock_dom_selector, resolve);
     });
 
     await promisePrice;
