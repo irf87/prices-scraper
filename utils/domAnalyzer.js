@@ -14,7 +14,7 @@ class DomAnalyzer {
 
   getStock(domSelector, resolve = () => {}) {
     this.readText(domSelector, (text) => {
-      const stock = text;
+      const stock = text ? text.replace(/\D/g,''): '';
       resolve(stock);
     });
   }

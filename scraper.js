@@ -1,12 +1,19 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./modules/scraped/controller');
+const productCtrl = require('./modules/products/controller');
 const scraperNotifications = require('./modules/notifications/controller');
 const DomAnalyzer = require('./utils/domAnalyzer');
+const RulesAnalyzer = require('./utils/rulesAnalyzer');
+
+const Locale = require('./utils/locale');
 
 let toScraping = [];
 let cont = 0;
 let arrayLength = 0;
+
+const locale = new Locale();
+const t = locale.getLocale();
 
 scraperCtrl.getEnables().then((rows) => {
   if (rows.length > 0) {
@@ -19,9 +26,9 @@ scraperCtrl.getEnables().then((rows) => {
 const executeScraping = async (scraper, cont) => {
   if (cont >= arrayLength) return;
   try {
-    console.log(scraper.url_to_scrape);
+    const [product] = await productCtrl.get(scraper.product_id);
     const [rules] = await scraperNotifications.get(scraper.id);
-    if (rules typeof === 'object' && rules?.length > 0) {
+    if (typeof rules === 'object' && rules?.length > 0) {
       cont ++;
       executeScraping(toScraping[cont], cont);
       return;
@@ -34,25 +41,40 @@ const executeScraping = async (scraper, cont) => {
       return;
     }
     const $ = cheerio.load(data);
-    const analyzer = new DomAnalyzer($, data);
+    const dom = new DomAnalyzer($, data);
 
     const promisePrice = new Promise((resolve) => {
-      if (!scraper.price_dom_selector) return resolve();
-      analyzer.getPrice(scraper.price_dom_selector, resolve);
+      if (!scraper.price_dom_selector) return resolve(null);
+      dom.getPrice(scraper.price_dom_selector, resolve);
     });
     const promiseStock = new Promise((resolve) => {
-      if (!scraper.stock_dom_selector) return resolve();
-      analyzer.getStock(scraper.stock_dom_selector, resolve);
+      if (!scraper.stock_dom_selector) return resolve(null);
+      dom.getStock(scraper.stock_dom_selector, resolve);
     });
 
     const promiseAvailability = new Promise((resolve) => {
-      if (!scraper.availability_dom_selector) return resolve();
-      analyzer.getAvailability(scraper.stock_dom_selector, resolve);
+      if (!scraper.availability_dom_selector) return resolve(null);
+      dom.getAvailability(scraper.availability_dom_selector, resolve);
     });
 
-    await promisePrice;
-    await promiseStock;
-    await promiseAvailability;
+    const price = await promisePrice;
+    const stock = await promiseStock;
+    const availability = await promiseAvailability;
+
+    const ruleAnalyze = new RulesAnalyzer(
+      price,
+      stock,
+      availability,
+      scraper.id,
+      scraper.url_to_scrape,
+      product,
+      rules,
+      t
+    );
+    await ruleAnalyze.setSnap();
+    ruleAnalyze.analyzePrice();
+    ruleAnalyze.createSnap();
+    const toSend = ruleAnalyze.getNotificationsToSend();
 
     cont ++;
     executeScraping(toScraping[cont], cont);

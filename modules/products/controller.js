@@ -14,8 +14,11 @@ const create = async (params) =>  {
   return { success: info.changes >= 1 ? true : false };
 }
 
-const get = async (params) => {
-  const query = `SELECT * FROM product`;
+const get = async (id) => {
+  let query = `SELECT * FROM product`;
+  if (id) {
+    query += ` where id = ${id}`;
+  }
   const row = dbInstance.execute(query);
   return row.all();
 }
