@@ -19,9 +19,16 @@ const get = async (id) => {
   return row.all();
 }
 
+const update = async (id, params = {}) => {
+  const updateProduct = dbInstance.prepareUpdate('scraper_notifications', params, `id=${id}`);
+  const info = updateProduct.run();
+  return { success: info.changes >= 1 ? true : false };
+}
+
 const notifications = {
   create,
   get,
+  update,
 };
 
 module.exports = notifications;

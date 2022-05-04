@@ -1,12 +1,16 @@
+require('dotenv').config();
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./modules/scraped/controller');
 const productCtrl = require('./modules/products/controller');
 const scraperNotifications = require('./modules/notifications/controller');
+
 const DomAnalyzer = require('./utils/domAnalyzer');
 const RulesAnalyzer = require('./utils/rulesAnalyzer');
-
 const Locale = require('./utils/locale');
+const CL_TelegramBot = require('./utils/notifications/telegramBot');
+
+const { toUpdateNotificationDate } = require('./utils/notifications/transformer');
 
 let toScraping = [];
 let cont = 0;
@@ -14,6 +18,8 @@ let arrayLength = 0;
 
 const locale = new Locale();
 const t = locale.getLocale();
+
+const telegram = new CL_TelegramBot();
 
 scraperCtrl.getEnables().then((rows) => {
   if (rows.length > 0) {
@@ -74,7 +80,15 @@ const executeScraping = async (scraper, cont) => {
     await ruleAnalyze.setSnap();
     ruleAnalyze.analyzePrice();
     ruleAnalyze.createSnap();
+
     const toSend = ruleAnalyze.getNotificationsToSend();
+    if(toSend.length > 0) {
+      const toUpdate = toUpdateNotificationDate(toSend);
+      await scraperNotifications.update(rules.id, toUpdate);
+      toSend.forEach((send) => {
+        telegram.send(send.message);
+      });
+    }
 
     cont ++;
     executeScraping(toScraping[cont], cont);
