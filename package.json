@@ -1,13 +1,14 @@
 {
   "name": "prices-scraper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Scraper to find item's prices",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
     "start-server": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
   },
   "author": "irf87",
   "license": "ISC",
@@ -21,5 +22,8 @@
     "express": "^4.17.3",
     "i18n": "^0.14.2",
     "node-telegram-bot-api": "^0.57.0"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
