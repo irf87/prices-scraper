@@ -79,6 +79,7 @@ const executeScraping = async (scraper, cont) => {
     );
     await ruleAnalyze.setSnap();
     ruleAnalyze.analyzePrice();
+    ruleAnalyze.analyzeStock();
     ruleAnalyze.createSnap();
 
     const toSend = ruleAnalyze.getNotificationsToSend();

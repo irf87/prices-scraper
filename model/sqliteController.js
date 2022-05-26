@@ -43,7 +43,6 @@ class sqliteDriver {
       if (length > 1 && index < length -1 ) setValues += ',';
     });
     const query = `UPDATE ${table} SET ${setValues} WHERE ${condition}`;
-    console.log(`query = ${query}`);
     return db.prepare(`UPDATE ${table} SET ${setValues} WHERE ${condition}`);
   }
 

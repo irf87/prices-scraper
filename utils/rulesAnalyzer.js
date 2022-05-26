@@ -29,6 +29,27 @@ class RulesAnalyzer {
     return typeof val === 'number' && val >= 0;
   }
 
+  isMatch(str) {
+    const ruleToMatch = this.getRuleVal(rules.TO_MATCH);
+    const obj = {
+      isMatch: false,
+      wordMatch: ruleToMatch,
+    }
+    if (!ruleToMatch
+      || !canSendNotification(prop[rules.TO_MATCH], this.rules, this.date)
+      || !str) {
+        return obj;
+      }
+
+    const pattern = new RegExp(ruleToMatch.toLowerCase(), 'g');
+
+    if (str.toLowerCase().match(pattern)) {
+      obj.isMatch = true;
+      obj.wordMatch = ruleToMatch;
+    }
+    return obj;
+  }
+
   makeMessage(rule, properties = {}) {
     const name = this.product.name;
     const site = this.urlScraped;
@@ -74,10 +95,45 @@ class RulesAnalyzer {
           date: this.date,
         });
     }
+
+    const oMatch = this.isMatch(String(this.price));
+    if (oMatch.isMatch) {
+      this.notificationsToSend.push({
+        type: rules.TO_MATCH,
+        message: this.makeMessage(rules.TO_MATCH, {
+          word: this.price,
+          ruleMatch: rules.TO_MATCH,
+        }),
+        date: this.date,
+      });
+    }
+
   }
 
   analyzeStock() {
-
+    const oMatch = this.isMatch(String(this.stock));
+    if (oMatch.isMatch) {
+      this.notificationsToSend.push({
+        type: rules.TO_MATCH,
+        message: this.makeMessage(rules.TO_MATCH, {
+          word: this.stock,
+          ruleMatch: rules.TO_MATCH,
+        }),
+        date: this.date,
+      });
+    }
+    if (this.getRuleVal(rules.STOCK_CHANGES)
+      && canSendNotification(prop[rules.STOCK_CHANGES], this.rules, this.date)
+      && this.lastSnap?.stock && this.stock !== this.lastSnap?.stock) {
+        this.notificationsToSend.push({
+          type: rules.STOCK_CHANGES,
+          message: this.makeMessage(rules.STOCK_CHANGES, {
+            stock: this.stock,
+            lastStock: this.lastSnap?.stock,
+          }),
+          date: this.date,
+        });
+    }
   }
 
   analyzeAvailability() {
