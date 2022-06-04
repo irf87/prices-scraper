@@ -30,7 +30,10 @@ scraperCtrl.getEnables().then((rows) => {
 });
 
 const executeScraping = async (scraper, cont) => {
-  if (cont >= arrayLength) return;
+  if (cont >= arrayLength) {
+    process.exit()
+    return
+  };
   try {
     const [product] = await productCtrl.get(scraper.product_id);
     const [rules] = await scraperNotifications.get(scraper.id);

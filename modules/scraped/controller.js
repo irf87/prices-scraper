@@ -15,6 +15,15 @@ const getEnables = async (params) => {
   return row.all();
 }
 
+const get = async (id) => {
+  let query = `SELECT * FROM product_scraped`;
+  if (id) {
+    query += ` where id = ${id}`;
+  }
+  const row = dbInstance.execute(query);
+  return row.all();
+}
+
 const remove = async ({ id }) => {
   const query = `DELETE FROM product_scraped WHERE id=${id}`;
   const removeScraper = dbInstance.execute(query);
@@ -31,6 +40,7 @@ const update = async (id, params) => {
 const scraped = {
   create,
   getEnables,
+  get,
   remove,
   update,
 };

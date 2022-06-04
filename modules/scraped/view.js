@@ -21,6 +21,15 @@ router.get('/enables',(req, res) => {
   });
 });
 
+router.get('/:id?',(req, res) => {
+  ctrl.get(req.params?.id).then((respond) => {
+    res.status(200).send(respond);
+  })
+  .catch((e) => {
+    res.status(400).send({error: e});
+  });
+});
+
 router.delete('/:id',(req, res) => {
   ctrl.remove(req.params).then((respond) => {
     res.status(200).send(respond);
