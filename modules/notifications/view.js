@@ -21,4 +21,13 @@ const express = require('express'),
     });
   });
 
+  router.put('/:id',(req, res) => {
+    ctrl.update(req.params.id, req.body).then((respond) => {
+      res.status(200).send(respond);
+    })
+    .catch((e) => {
+      res.status(400).send({error: e});
+    });
+  });
+
   module.exports = router;
