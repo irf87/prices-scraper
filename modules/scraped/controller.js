@@ -1,4 +1,8 @@
+const axios = require('axios');
+const cheerio = require('cheerio');
+
 const dbInstance = require('../../model/sqliteController');
+const DomAnalyzer = require('../../utils/domAnalyzer');
 
 const create = async (params) => {
   const today = new Date();
@@ -37,12 +41,31 @@ const update = async (id, params) => {
   return { success: info.changes >= 1 ? true : false };
 }
 
+const testScraper = async ({ querySelector, url }) => {
+  if(!querySelector || !url) {
+    return { error: 'missing params' };
+  }
+  const { data, error } = await axios(url);
+  if (error) {
+    return error;
+  }
+  const $ = cheerio.load(data);
+  const dom = new DomAnalyzer($, data);
+  const resp = new Promise((resolve) => {
+    dom.readText(querySelector, (text) => {
+      resolve({ respond: text});
+    });
+  });
+  return await resp;
+}
+
 const scraped = {
   create,
   getEnables,
   get,
   remove,
   update,
+  testScraper,
 };
 
 module.exports = scraped;

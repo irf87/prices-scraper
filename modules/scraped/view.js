@@ -12,6 +12,15 @@ router.post('/',(req, res) => {
   });
 });
 
+router.post('/test',(req, res) => {
+  ctrl.testScraper(req.body).then((respond) => {
+    res.status(200).send(respond);
+  })
+  .catch((e) => {
+    res.status(400).send({error: e});
+  });
+});
+
 router.get('/enables',(req, res) => {
   ctrl.getEnables().then((respond) => {
     res.status(200).send(respond);
