@@ -11,6 +11,13 @@ class CL_TelegramBot {
   send(msg = '') {
     this.bot.sendMessage(ownChatId, msg);
   }
+
+  stop() {
+    if(this.bot.isPolling()) {
+      this.bot.stopPolling();
+    }
+    this.bot.close();
+  }
 }
 
 module.exports = CL_TelegramBot;

@@ -31,7 +31,8 @@ scraperCtrl.getEnables().then((rows) => {
 
 const executeScraping = async (scraper, cont) => {
   if (cont >= arrayLength) {
-    process.exit()
+    telegram.stop();
+    process.exit();
     return
   };
   try {
@@ -44,6 +45,7 @@ const executeScraping = async (scraper, cont) => {
     }
 
     const { data, error } = await axios(scraper.url_to_scrape);
+
     if (error) {
       cont ++;
       executeScraping(toScraping[cont], cont);
