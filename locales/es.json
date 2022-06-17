@@ -1,7 +1,7 @@
 {
-  "PRICE_CHANGE": "El producto {{name}} ha cambiado su precio de ${{price}} a ${{newPrice}} en el sitio {{site}}",
-  "PRICE_HIGHER": "Incremento de precio. El precio del producto {{name}} es MAYOR igual a ${{priceRule}}, su precio es ${{price}} en {{site}}",
-  "PRICE_LOWER": "Disminución de precio. El precio del producto {{name}} es MENOR igual a ${{priceRule}}, su precio es ${{price}} en {{site}}",
-  "MATCH": "Se encontró el patron {{ruleMatch}} en {{word}} en el producto {{name}} del sitio {{site}}",
-  "STOCK_CHANGES": "Hubo un cambio en el stock del producto {{name}}, stock acutal {{stock}}, stock previo {{lastStock}}, en el sitio {{site}}"
+  "PRICE_CHANGE": "💸 El producto {{name}} ha cambiado su precio de ${{price}} a ${{newPrice}}\n\n(Sitio):[{{{site}}}]",
+  "PRICE_HIGHER": "⬆️ Incremento de precio. El precio del producto {{name}} es MAYOR igual a ${{priceRule}}, su precio es ${{price}}.\n\n(Sitio):[{{{site}}}]",
+  "PRICE_LOWER": "⬇️ Disminución de precio. El precio del producto {{name}} es MENOR igual a ${{priceRule}}, su precio es ${{price}}.\n\n(Sitio):[{{{site}}}]",
+  "MATCH": "✅ Se encontró el patron {{ruleMatch}} en {{word}} en el producto {{name}}.\n\n(Sitio):[{{{site}}}]",
+  "STOCK_CHANGES": "Hubo un cambio en el stock del producto {{name}}, stock acutal {{stock}}, stock previo {{lastStock}}.\n\n(Sitio):[{{{site}}}]"
 }

@@ -9,7 +9,7 @@ class CL_TelegramBot {
   }
 
   send(msg = '') {
-    this.bot.sendMessage(ownChatId, msg);
+    this.bot.sendMessage(ownChatId, msg, { parse_mode: 'Markdown', disable_web_page_preview: false });
   }
 
   stop() {
