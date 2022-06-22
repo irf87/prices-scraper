@@ -6,8 +6,8 @@ const getProductHistory = async (productId) => {
   return row.all();
 }
 
-const getLastRow = async (productId) => {
-  const query = `SELECT * FROM product_scraped_snap WHERE product_id=${productId} ORDER BY date DESC LIMIT 1`;
+const getLastRow = async (productScrapedId) => {
+  const query = `SELECT * FROM product_scraped_snap WHERE product_scraped_id=${productScrapedId} ORDER BY date DESC LIMIT 1`;
   const row = dbInstance.execute(query);
   return row.all();
 }

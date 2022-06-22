@@ -145,7 +145,7 @@ class RulesAnalyzer {
   }
 
   async setSnap() {
-    const [lastSnap] = await scrapedSnapCtrl.getLastRow(this.product.id);
+    const [lastSnap] = await scrapedSnapCtrl.getLastRow(this.scraperId);
     this.lastSnap = lastSnap;
   }
 
