@@ -5,11 +5,15 @@ const ownChatId = process.env.TELEGRAM_BOT_CHAT_ID;
 
 class CL_TelegramBot {
   constructor() {
-    this.bot = new TelegramBot(token, { polling: true });
+    this.bot = new TelegramBot(token, { polling: false });
   }
 
   send(msg = '') {
-    this.bot.sendMessage(ownChatId, msg, { parse_mode: 'Markdown', disable_web_page_preview: false });
+    try {
+      this.bot.sendMessage(ownChatId, msg, { parse_mode: 'Markdown', disable_web_page_preview: false });
+    } catch(err){
+      console.error(err);
+    }
   }
 
   stop() {

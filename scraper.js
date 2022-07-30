@@ -88,7 +88,7 @@ const executeScraping = async (scraper, cont) => {
     ruleAnalyze.createSnap();
 
     const toSend = ruleAnalyze.getNotificationsToSend();
-    if(toSend.length > 0) {
+    if(toSend.length > 0 && process.env.ENABLE_NOTIFICATIONS === 'true') {
       const toUpdate = toUpdateNotificationDate(toSend);
       await scraperNotifications.update(rules.id, toUpdate);
       toSend.forEach((send) => {
