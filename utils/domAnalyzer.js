@@ -1,12 +1,16 @@
-const DEFAULT_TIMEOUT = 3000;
+const DEFAULT_TIMEOUT = 6000;
 class DomAnalyzer {
   constructor ($, html) {
     this.$ = $;
     this.html = html;
+    this.isDisabled = false;
   }
 
   getPrice(domSelector, resolve = () => {}) {
-    const timer = setTimeout(() => resolve(0), DEFAULT_TIMEOUT);
+    const timer = setTimeout(() => {
+      this.isDisabled = true;
+      resolve(0);
+    }, DEFAULT_TIMEOUT);
     this.readText(domSelector, (text) => {
       const price = text;
       const number = Number(price.replace(/[^0-9.-]+/g,""));

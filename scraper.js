@@ -36,10 +36,10 @@ const executeScraping = async (scraper, cont) => {
     return
   };
   try {
+    cont ++;
     const [product] = await productCtrl.get(scraper.product_id);
     const [rules] = await scraperNotifications.get(scraper.id);
     if (typeof rules === 'object' && rules?.length > 0) {
-      cont ++;
       executeScraping(toScraping[cont], cont);
       return;
     }
@@ -47,7 +47,6 @@ const executeScraping = async (scraper, cont) => {
     const { data, error } = await axios(scraper.url_to_scrape);
 
     if (error) {
-      cont ++;
       executeScraping(toScraping[cont], cont);
       return;
     }
@@ -71,6 +70,13 @@ const executeScraping = async (scraper, cont) => {
     const price = await promisePrice;
     const stock = await promiseStock;
     const availability = await promiseAvailability;
+    if (dom.isDisabled) {
+      scraperCtrl.update(scraper.id, { enable: 0});
+      const disabledMsg = t('DISABLE_SCRAPER_PRODUCT', {id: scraper.id, name: product.name });
+      telegram.send(disabledMsg);
+      executeScraping(toScraping[cont], cont);
+      return;
+    }
 
     const ruleAnalyze = new RulesAnalyzer(
       price,
@@ -96,7 +102,6 @@ const executeScraping = async (scraper, cont) => {
       });
     }
 
-    cont ++;
     executeScraping(toScraping[cont], cont);
     
   } catch (error) {
