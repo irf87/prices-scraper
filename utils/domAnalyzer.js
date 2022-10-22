@@ -1,3 +1,4 @@
+const DEFAULT_TIMEOUT = 3000;
 class DomAnalyzer {
   constructor ($, html) {
     this.$ = $;
@@ -5,24 +6,30 @@ class DomAnalyzer {
   }
 
   getPrice(domSelector, resolve = () => {}) {
+    const timer = setTimeout(() => resolve(0), DEFAULT_TIMEOUT);
     this.readText(domSelector, (text) => {
       const price = text;
       const number = Number(price.replace(/[^0-9.-]+/g,""));
+      clearTimeout(timer);
       resolve(number);
     });
   }
 
   getStock(domSelector, resolve = () => {}) {
+    const timer = setTimeout(() => resolve(''), DEFAULT_TIMEOUT);
     this.readText(domSelector, (text) => {
       const stock = text ? text.replace(/\D/g,''): '';
+      clearTimeout(timer);
       resolve(stock);
     });
   }
 
   getAvailability(domSelector, resolve = () => {}) {
     const context = this;
+    const timer = setTimeout(() => resolve(0), DEFAULT_TIMEOUT);
     this.readText(domSelector, (text) => {
       const availability = text;
+      clearTimeout(timer);
       resolve(availability);
     });
   }
