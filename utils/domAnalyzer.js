@@ -1,4 +1,4 @@
-const DEFAULT_TIMEOUT = 6000;
+const DEFAULT_TIMEOUT = 10000;
 class DomAnalyzer {
   constructor ($, html) {
     this.$ = $;
