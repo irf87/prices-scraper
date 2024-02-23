@@ -1,6 +1,6 @@
 const express = require('express'),
 	router = express.Router();
-
+const humps = require('humps');  
 const ctrl = require('./controller');
 
 router.post('/',(req, res) => {
@@ -23,7 +23,7 @@ router.post('/test',(req, res) => {
 
 router.get('/enables',(req, res) => {
   ctrl.getEnables().then((respond) => {
-    res.status(200).send(respond);
+    res.status(200).send(humps.camelizeKeys(respond));
   })
   .catch((e) => {
     res.status(400).send({error: e});
@@ -32,7 +32,7 @@ router.get('/enables',(req, res) => {
 
 router.get('/:id?',(req, res) => {
   ctrl.get(req.params?.id).then((respond) => {
-    res.status(200).send(respond);
+    res.status(200).send(humps.camelizeKeys(respond));
   })
   .catch((e) => {
     res.status(400).send({error: e});

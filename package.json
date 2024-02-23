@@ -20,6 +20,7 @@
     "dayjs": "^1.11.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "humps": "^2.0.1",
     "i18n": "^0.14.2",
     "node-telegram-bot-api": "^0.57.0"
   },

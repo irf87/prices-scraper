@@ -1,4 +1,4 @@
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = process.env.TIMEOUT_ANALIZER || 1000;
 class DomAnalyzer {
   constructor ($, html) {
     this.$ = $;
