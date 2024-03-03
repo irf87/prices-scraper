@@ -1,4 +1,8 @@
 require('dotenv').config();
+
+const SCRAPPER_INTERVAL = process.env.SCRAPPER_INTERVAL_TIME;
+const SCRAPPER_INTERVAL_UNIT = process.env.SCRAPPER_INTERVAL_UNIT;
+
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./modules/scraped/controller');
@@ -11,6 +15,7 @@ const Locale = require('./utils/locale');
 const CL_TelegramBot = require('./utils/notifications/telegramBot');
 
 const { toUpdateNotificationDate } = require('./utils/notifications/transformer');
+const { parseToMiliseconds } = require('./utils/time');
 
 let toScraping = [];
 let cont = 0;
@@ -21,19 +26,11 @@ const t = locale.getLocale();
 
 const telegram = new CL_TelegramBot();
 
-scraperCtrl.getEnables().then((rows) => {
-  if (rows.length > 0) {
-    toScraping = rows;
-    arrayLength = rows.length;
-    executeScraping(toScraping[cont], cont);
-  }
-});
-
 const executeScraping = async (scraper, cont) => {
   if (cont >= arrayLength) {
-    telegram.stop();
-    process.exit();
-    return
+    // telegram.stop();
+    // process.exit();
+    return;
   };
   try {
     cont ++;
@@ -108,3 +105,15 @@ const executeScraping = async (scraper, cont) => {
     console.error(error);
   }
 }
+
+function excecute() {
+  scraperCtrl.getEnables().then((rows) => {
+    if (rows.length > 0) {
+      toScraping = rows;
+      arrayLength = rows.length;
+      executeScraping(toScraping[cont], cont);
+    }
+  });
+}
+
+setInterval(excecute, parseToMiliseconds(SCRAPPER_INTERVAL, SCRAPPER_INTERVAL_UNIT));

@@ -36,12 +36,15 @@ const remove = async ({ id }) => {
 }
 
 const update = async (id, params) => {
+  const today = new Date();
+  params.update_at = today.toISOString();
   const updateScraper = dbInstance.prepareUpdate('product_scraped', params, `id=${id}`);
   const info = updateScraper.run();
   return { success: info.changes >= 1 ? true : false };
 }
 
-const testScraper = async ({ querySelector, url }) => {
+const testScraper = async ({ query_selector, url }) => {
+  const querySelector = query_selector;
   if(!querySelector || !url) {
     return { error: 'missing params' };
   }

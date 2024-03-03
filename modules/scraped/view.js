@@ -1,7 +1,10 @@
 const express = require('express'),
 	router = express.Router();
-const humps = require('humps');  
+
+const parseParams = require('../../middleware/parseParams');
 const ctrl = require('./controller');
+
+router.use(parseParams);
 
 router.post('/',(req, res) => {
   ctrl.create(req.body).then((respond) => {
@@ -23,7 +26,7 @@ router.post('/test',(req, res) => {
 
 router.get('/enables',(req, res) => {
   ctrl.getEnables().then((respond) => {
-    res.status(200).send(humps.camelizeKeys(respond));
+    res.status(200).send(respond);
   })
   .catch((e) => {
     res.status(400).send({error: e});
@@ -32,7 +35,7 @@ router.get('/enables',(req, res) => {
 
 router.get('/:id?',(req, res) => {
   ctrl.get(req.params?.id).then((respond) => {
-    res.status(200).send(humps.camelizeKeys(respond));
+    res.status(200).send(respond);
   })
   .catch((e) => {
     res.status(400).send({error: e});
