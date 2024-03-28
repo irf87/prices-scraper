@@ -5,33 +5,27 @@ const express = require('express'),
 
 // require('dotenv').config();
 // --------- CARGAR VISTAS --------- //
-const productsUri = require('./modules/products/view');
-const scraperUri = require('./modules/scraped/view');
-const scraperNotificationsUri = require('./modules/notifications/view');
+const productsUri = require('./presentation/products/view');
+const scraperUri = require('./presentation/scraped/view');
+const scraperNotificationsUri = require('./presentation/notifications/view');
+const syncUri = require('./presentation/sync/view');
+const reportsUri = require('./presentation/reports/view');
 
 const port = process.env._PORT || 8081;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// app.use(function(req, res, next) {
-// 	res.header("Access-Control-Allow-Origin", "*");
-// 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-// 	res.header("Access-Control-Allow-Headers", "Origin,x-session-token, Content-Type, Accept");
-// 	res.header('Access-Control-Allow-Credentials', true);
-// 	next();
-// });
 
-// app.use('/public',express.static(path.join(__dirname, 'public')));
 console.log(`ruta ${__dirname}`);
-// app.use('/database',express.static(path.join(__dirname, 'database')));
 
 /* Rutas */
 
 app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);
 app.use('/api/notifications', scraperNotificationsUri);
+app.use('/api/sync', syncUri);
+app.use('/api/reports', reportsUri);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

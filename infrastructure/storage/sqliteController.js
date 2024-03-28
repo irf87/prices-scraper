@@ -1,7 +1,7 @@
 const Database = require('better-sqlite3');
 const db = new Database('price_scraper.db', { verbose: console.log, fileMustExist: true });
 
-const { transform } = require('../utils/paramsTransformer');
+const { transform } = require('../../utils/paramsTransformer');
 
 let dbInstance = null;
 

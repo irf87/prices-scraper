@@ -5,9 +5,9 @@ const SCRAPPER_INTERVAL_UNIT = process.env.SCRAPPER_INTERVAL_UNIT;
 
 const axios = require('axios');
 const cheerio = require('cheerio');
-const scraperCtrl = require('./modules/scraped/controller');
-const productCtrl = require('./modules/products/controller');
-const scraperNotifications = require('./modules/notifications/controller');
+const scraperCtrl = require('./presentation/scraped/controller');
+const productCtrl = require('./presentation/products/controller');
+const scraperNotifications = require('./presentation/notifications/controller');
 
 const DomAnalyzer = require('./utils/domAnalyzer');
 const RulesAnalyzer = require('./utils/rulesAnalyzer');
