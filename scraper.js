@@ -106,7 +106,7 @@ const executeScraping = async (scraper, cont) => {
   }
 }
 
-function excecute() {
+function execute() {
   scraperCtrl.getEnables().then((rows) => {
     if (rows.length > 0) {
       toScraping = rows;
@@ -116,4 +116,5 @@ function excecute() {
   });
 }
 
-setInterval(excecute, parseToMiliseconds(SCRAPPER_INTERVAL, SCRAPPER_INTERVAL_UNIT));
+execute();
+setInterval(execute, parseToMiliseconds(SCRAPPER_INTERVAL, SCRAPPER_INTERVAL_UNIT));
