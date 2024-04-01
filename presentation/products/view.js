@@ -1,7 +1,10 @@
 const express = require('express'),
-	router = express.Router();
+  router = express.Router();
 
+const parseParams = require('../../middleware/parseParams');
 const ctrl = require('./controller');
+
+router.use(parseParams);
 
 router.post('/',(req, res) => {
   ctrl.create(req.body).then((respond) => {
@@ -21,8 +24,9 @@ router.get('/',(req, res) => {
   });
 });
 
-router.put('/:id',(req, res) => {
-  ctrl.update(req.params.id, req.body).then((respond) => {
+router.get('/scraped',(req, res) => {
+  const isQueryCommand = req?.query?.is_query_command === 'true' ?  true : false;
+  ctrl.getScraped(isQueryCommand).then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
@@ -30,5 +34,13 @@ router.put('/:id',(req, res) => {
   });
 });
 
+router.put('/:id', (req, res) => {
+  ctrl.update(req.params.id, req.body).then((respond) => {
+    res.status(200).send(respond);
+  })
+  .catch((e) => {
+    res.status(400).send({error: e});
+  });
+});
 
 module.exports = router;

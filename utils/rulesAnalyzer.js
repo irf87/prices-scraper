@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const scrapedSnapCtrl = require('../modules/scraped-snap/controller');
+const scrapedSnapCtrl = require('../application/scraped-snap');
 
 const { messages } = require('./messages');
 const { rules, prop, canSendNotification } = require('./notifications/rules');
@@ -71,8 +71,8 @@ class RulesAnalyzer {
           date: this.date,
         });
     }
-    if (this.isValidRule(rules.PRICE_HIGHER)
-      && this.getRuleVal(rules.PRICE_HIGHER) >= this.price
+    if (this.isValidRule(rules.PRICE_HIGHER) === 'number'
+      && this.price >= this.getRuleVal(rules.PRICE_HIGHER)
       && canSendNotification(prop[rules.PRICE_HIGHER], this.rules, this.date)) {
         this.notificationsToSend.push({
           type: rules.PRICE_HIGHER,
@@ -84,7 +84,7 @@ class RulesAnalyzer {
         });
     }
     if (this.isValidRule(rules.PRICE_LOWER) === 'number'
-      && this.getRuleVal(rules.PRICE_LOWER) <= this.price
+      && this.price <= this.getRuleVal(rules.PRICE_LOWER)
       && canSendNotification(prop[rules.PRICE_LOWER], this.rules, this.date)) {
         this.notificationsToSend.push({
           type: rules.PRICE_LOWER,
@@ -154,6 +154,7 @@ class RulesAnalyzer {
       product_scraped_id: this.scraperId,
       date: this.date,
       product_id: this.product.id,
+      last_date_sync = null,
     };
 
     if (typeof this.price === 'number') oSnap.price = this.price; 

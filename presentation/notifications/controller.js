@@ -1,4 +1,4 @@
-const dbInstance = require('../../model/sqliteController');
+const dbInstance = require('../../infrastructure/storage/sqliteController');
 
 const { notificationTransformer } = require('../../utils/notificationsTransformer');
 
