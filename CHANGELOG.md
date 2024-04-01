@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/irf87/prices-scraper/compare/v1.1.0...v1.2.0) (2024-04-01)
+
+
+### Features
+
+* add new endpoint and transform response to camel case ([75dd196](https://github.com/irf87/prices-scraper/commit/75dd1963110c91b1ee44fa08db62f67c3a9795cd))
+* create endpoint to test queries ([7607d13](https://github.com/irf87/prices-scraper/commit/7607d13cb4d91246b35a7920dc68f72ecf45e4aa))
+* disable scraper when can't get price ([31f7504](https://github.com/irf87/prices-scraper/commit/31f7504e6e3957c2f1cb69af44ad6655e44528f1))
+* exit process when scraper finish and creat get all scrapers api ([b6c9300](https://github.com/irf87/prices-scraper/commit/b6c93001e6f1a1586d3326cd519bfbeafebbd666))
+* integrate couchdb controller ([6b22eb6](https://github.com/irf87/prices-scraper/commit/6b22eb625d1f02f450c4844978cf2d9462b10dc1))
+* integrate mongoDB and new architecture ([fec6847](https://github.com/irf87/prices-scraper/commit/fec68474a2638f633feacafe511d5b5a069ac25e))
+* parse responses and body params ([8aff6e2](https://github.com/irf87/prices-scraper/commit/8aff6e2d519a59331db691a91c49ffacf0ad448a))
+
+
+### Bug Fixes
+
+* add timer if do not respond when analized the dom ([09424c7](https://github.com/irf87/prices-scraper/commit/09424c72cf0a2d27a9b5f0e8de194eb9f63340db))
+* fix comparison between rules and price ([3efd94d](https://github.com/irf87/prices-scraper/commit/3efd94d7440e2ece74df022cd156f9ef8967f598))
+* fix url messages format ([e0688cf](https://github.com/irf87/prices-scraper/commit/e0688cf40c36ff5cf53dbda72e686b2147779d66))
+* get snaps by product_scraped_id insted of product_id ([c917338](https://github.com/irf87/prices-scraper/commit/c917338c1b78c0109d58c5e6a1deb51e23d8f956))
+
 ## 1.1.0 (2022-05-26)
 
 
