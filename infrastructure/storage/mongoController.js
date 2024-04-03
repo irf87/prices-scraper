@@ -11,6 +11,7 @@ let oStatus = {
 	isLoaded : false,
 	connected : false
 };
+let conectionsAttemps = 0;
 //------------------------PARA DESARROLLO------------------------
 const dbName	= process.env.MONGO_DB_NAME ;
 const host 		= process.env.MONGO_DB_HOST || "localhost";
@@ -31,11 +32,12 @@ const dbOper = {
 	del : del,
 	status : status,
 	getObjetId: getObjetId,
+	deleteCollection: deleteCollection,
 }
 
 const urlConnection = 'mongodb://' + host + ":" + puerto + "/" + dbName;
 
-async function connect(){
+async function connect() {
 	const client = new MongoClient(urlConnection);
 	console.log(`urlConnection ${urlConnection}`);
 	async function initDatabase() {
@@ -60,8 +62,17 @@ async function connect(){
 		} catch (error) {
 			console.error('Error al crear la base de datos y la colección:', error);
 		} finally {
-			// Cerrar la conexión con el cliente de MongoDB
-			// await client.close();
+			if (!oStatus.isLoaded) {
+				if (conectionsAttemps <= 3) {
+					console.log(`Intento de conexión a la base de datos ${conectionsAttemps}`);
+					setTimeout(initDatabase, 3000);
+					conectionsAttemps ++;
+				} else {
+					console.log('No se pudo conectar');
+					// Cerrar la conexión con el cliente de MongoDB
+					await client.close();
+				}
+			}
 		}
 	}
 	
@@ -188,16 +199,35 @@ async function add(nameCollection, doc, options = {}) {
 		if(responseOperation.err){
 			respond.status = "error-bd";
 			respond.error="Hubo problemas al insertar registro en la BD. " + err;
-		 }
-		else{
+		}	else{
 			respond.status = "ok";
 			respond.message = "Se registró correctamente";
 			respond.data = responseOperation;
-			console.log(responseOperation);
 		}
 		return respond;
 	}
 	catch(error){
+		respond.status = "error";
+		respond.error = "Error interno. "+error;
+		return respond;
+	}
+}
+
+async function deleteCollection(nameCollection) {
+	let respond = {};
+	try {
+		const responseOpration = await db.collection(nameCollection).drop();
+		if(responseOperation.err){
+			respond.status = "error-bd";
+			respond.error="Hubo problemas al insertar registro en la BD. " + err;
+		} else{
+			respond.status = "ok";
+			respond.message = `Se elimino la colección ${nameCollection} correctamente`;
+			respond.data = responseOperation;
+		}
+		return respond;
+	}
+	catch(error) {
 		respond.status = "error";
 		respond.error = "Error interno. "+error;
 		return respond;
@@ -242,7 +272,7 @@ function del(param,callback){
 
 //*-----------------INIT------------------------------
 (function () {
-  if (!db) dbCouchInstance = connect();
+  if (!oStatus.isLoaded) connect();
 })();
 
 //------------------Funciones publicas------------------

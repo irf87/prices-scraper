@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const DEFAULT_TIMEOUT = process.env.TIMEOUT_ANALIZER || 1000;
 class DomAnalyzer {
   constructor ($, html) {

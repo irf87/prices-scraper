@@ -105,14 +105,20 @@ const syncProductScrapedSnap = async () => {
   return { success: true, sync: list.length };
 }
 
-const resetSyncProductScraped = async () => {
+const resetSyncProductScraped = async (resetCollection) => {
   await productScrapedCtrl.updateProductScraped('last_date_sync IS NOT NULL', { last_date_sync: null });
-  return { success: true };
+  if (resetCollection) {
+    await dbMongoInstance.deleteCollection('products_scraped');
+  }
+  return { success: true, resetCollection };
 }
 
-const resetSyncProductScrapedSnap = async () => {
+const resetSyncProductScrapedSnap = async (resetCollection) => {
   await scrapedSnapCtrl.updateScrapedSnap('last_date_sync IS NOT NULL', { last_date_sync: null });
-  return { success: true };
+  if (resetCollection) {
+    await dbMongoInstance.deleteCollection('product_scraped_records');
+  }
+  return { success: true, resetCollection };
 }
 
 const sync = {

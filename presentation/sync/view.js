@@ -25,7 +25,7 @@ router.get('/scraped-snaps-sync', (req, res) => {
 });
 
 router.get('/scraped-sync-reset', (req, res) => {
-  ctrl.syncScrapedReset().then((respond) => {
+  ctrl.syncScrapedReset(req?.query?.reset_collection === 'true').then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
@@ -34,7 +34,7 @@ router.get('/scraped-sync-reset', (req, res) => {
 });
 
 router.get('/scraped-snap-sync-reset', (req, res) => {
-  ctrl.syncScrapedsSnapReset().then((respond) => {
+  ctrl.syncScrapedsSnapReset(req?.query?.reset_collection === 'true').then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {

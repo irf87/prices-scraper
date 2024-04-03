@@ -2,12 +2,16 @@ require('dotenv').config();
 
 const SCRAPPER_INTERVAL = process.env.SCRAPPER_INTERVAL_TIME;
 const SCRAPPER_INTERVAL_UNIT = process.env.SCRAPPER_INTERVAL_UNIT;
+const SCRAPPER_INTERVAL_SYNC_TIME = process.env.SCRAPPER_INTERVAL_SYNC_TIME;
+const SCRAPPER_INTERVAL_SYNC_UNIT = process.env.SCRAPPER_INTERVAL_SYNC_UNIT;
+const SCRAPPER_INTERVAL_SYNC_ENABLED = process.env.SCRAPPER_INTERVAL_SYNC_ENABLED;
 
 const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./presentation/scraped/controller');
 const productCtrl = require('./presentation/products/controller');
 const scraperNotifications = require('./presentation/notifications/controller');
+const syncCtrl = require('./application/sync');
 
 const DomAnalyzer = require('./utils/domAnalyzer');
 const RulesAnalyzer = require('./utils/rulesAnalyzer');
@@ -118,3 +122,9 @@ function execute() {
 
 execute();
 setInterval(execute, parseToMiliseconds(SCRAPPER_INTERVAL, SCRAPPER_INTERVAL_UNIT));
+
+// AUTO SYNC
+if (SCRAPPER_INTERVAL_SYNC_ENABLED === 'true') {
+  setInterval(syncCtrl.syncProductScraped(), parseToMiliseconds(SCRAPPER_INTERVAL_SYNC_TIME, SCRAPPER_INTERVAL_SYNC_UNIT));
+  setInterval(syncCtrl.syncProductScrapedSnap(), parseToMiliseconds(SCRAPPER_INTERVAL_SYNC_TIME, SCRAPPER_INTERVAL_SYNC_UNIT));
+}
