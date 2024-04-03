@@ -120,11 +120,15 @@ function execute() {
   });
 }
 
+const executeAutoSyncs = async () => {
+  await syncCtrl.syncProductScraped();
+  await syncCtrl.syncProductScrapedSnap();
+}
+
 execute();
 setInterval(execute, parseToMiliseconds(SCRAPPER_INTERVAL, SCRAPPER_INTERVAL_UNIT));
 
 // AUTO SYNC
 if (SCRAPPER_INTERVAL_SYNC_ENABLED === 'true') {
-  setInterval(syncCtrl.syncProductScraped(), parseToMiliseconds(SCRAPPER_INTERVAL_SYNC_TIME, SCRAPPER_INTERVAL_SYNC_UNIT));
-  setInterval(syncCtrl.syncProductScrapedSnap(), parseToMiliseconds(SCRAPPER_INTERVAL_SYNC_TIME, SCRAPPER_INTERVAL_SYNC_UNIT));
+  setInterval(executeAutoSyncs, parseToMiliseconds(SCRAPPER_INTERVAL_SYNC_TIME, SCRAPPER_INTERVAL_SYNC_UNIT));
 }
