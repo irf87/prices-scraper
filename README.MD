@@ -6,10 +6,12 @@
 
 3. You need sqlite installed in your system. [Official download page](https://www.sqlite.org/download.html)
 
-In linux just run a command to install it
-```
-sudo apt install sqlite3
-```
+    In linux just run a command to install it
+    ```
+    sudo apt install sqlite3
+    ```
+4. You need mongoDB 
+
 
 ## Create your bot in telegram
 To receive notifications about product changes, you need to create a bot.
@@ -28,7 +30,7 @@ In the response find the **chat.id** and set it in **TELEGRAM_BOT_CHAT_ID** insi
 
 It's divided by 2 important files
 
-- server.js
+- server.js there is an app client for the server [PRICE SCRAPER APP](https://github.com/irf87/price-scraper-app)
 - scraper.js
 
 ### server.js
@@ -43,4 +45,4 @@ In there you can add products, rules and the page where the program scrapes
 
 ### scaper.js
 
-It's the core, you can add it in a cron or run it independent, if match with you rules it send you a notification in your telegram bot.
+It's the core, you can run at once and set the interval in the env file with the property SCRAPPER_INTERVAL_TIME, if match with you rules it send you a notification in your telegram bot.

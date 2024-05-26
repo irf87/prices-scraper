@@ -6,8 +6,8 @@ const ctrl = require('./controller');
 
 router.use(parseParams);
 
-router.post('/',(req, res) => {
-  ctrl.create(req.body).then((respond) => {
+router.get('/scraped-sync', (req, res) => {
+  ctrl.syncScraped().then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
@@ -15,8 +15,8 @@ router.post('/',(req, res) => {
   });
 });
 
-router.get('/',(req, res) => {
-  ctrl.get().then((respond) => {
+router.get('/scraped-snaps-sync', (req, res) => {
+  ctrl.syncScrapedSnap().then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
@@ -24,8 +24,8 @@ router.get('/',(req, res) => {
   });
 });
 
-router.get('/scraped',(req, res) => {
-  ctrl.getScraped().then((respond) => {
+router.get('/scraped-sync-reset', (req, res) => {
+  ctrl.syncScrapedReset(req?.query?.reset_collection === 'true').then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
@@ -33,14 +33,13 @@ router.get('/scraped',(req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
-  ctrl.update(req.params.id, req.body).then((respond) => {
+router.get('/scraped-snap-sync-reset', (req, res) => {
+  ctrl.syncScrapedsSnapReset(req?.query?.reset_collection === 'true').then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
     res.status(400).send({error: e});
   });
 });
-
 
 module.exports = router;
