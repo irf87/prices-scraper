@@ -1,5 +1,5 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
-const dbMongoInstance = require('../infrastructure/storage/mongoController');
+const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
 const getProductHistory = async (productId) => {
   const query = `SELECT * FROM product_scraped_snap WHERE product_id=${productId}`;
@@ -40,14 +40,19 @@ const updateScrapedSnap = async (condition, params) => {
 }
 
 const getProductScrapedRecords = async (productScrapedId) => {
-  let query = {};
+  let result = [];
+  const session = ravenInstance.getSession();
   if (productScrapedId) {
-    query = {
-      productScrapedId: productScrapedId
-    };
+    try {
+      result = await session.query({ collection: 'productScrapedRecordsSnap' }).whereEquals('productScrapedId', productScrapedId).single();
+    } catch(err) {}
+  } else {
+    try {
+      result = await session.query({ collection: 'productScrapedRecordsSnap' }).all();
+    }
+    catch(err) {}
   }
-  const docResponse = await dbMongoInstance.find('product_scraped_records', query);
-  return docResponse;
+  return result;
 }
 
 const scrapedSnap = {
