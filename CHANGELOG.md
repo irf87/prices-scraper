@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/irf87/prices-scraper/compare/v1.2.0...v1.3.0) (2024-06-03)
+
+
+### Features
+
+* auto sync and delete collections when reset sync ([1485f1e](https://github.com/irf87/prices-scraper/commit/1485f1ed2f7dbb6c4ab98b5aa188b1a508030713))
+* deprecate mongodb and integrate ravendb ([e81bbb2](https://github.com/irf87/prices-scraper/commit/e81bbb2b267373b1aade335babf1f4f1820784f5))
+
+
+### Bug Fixes
+
+* fix sync function ([6f57489](https://github.com/irf87/prices-scraper/commit/6f57489d56b9b9473b694b8bc7abe2a2a2b74b7c))
+
 ## [1.2.0](https://github.com/irf87/prices-scraper/compare/v1.1.0...v1.2.0) (2024-04-01)
 
 
