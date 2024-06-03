@@ -1,5 +1,5 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
-const dbMongoInstance = require('../infrastructure/storage/mongoController');
+const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
 const createProduct = async (params) =>  {
   const {
@@ -32,8 +32,13 @@ const getProduct = async (id) => {
 
 const getProductScraped = async (isQueryCommand = false) => {
   if (isQueryCommand) {
-    const docResponse = await dbMongoInstance.find('products_scraped', { enable: 0 });
-    return docResponse.data || [];
+    let docResponse = [];
+    try {
+      const session = ravenInstance.getSession();
+      docResponse = await session.query({ collection: 'productsScraped' }).whereEquals('enable', 1).all();
+    } catch(err) {}
+    ravenInstance.closeSession();
+    return docResponse;
   } else {
     let query = `
     SELECT product.id, product.name, product.description, product.url_info, product.url_img, 

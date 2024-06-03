@@ -10,7 +10,8 @@
     ```
     sudo apt install sqlite3
     ```
-4. You need mongoDB 
+4. You need [ravendb](https://ravendb.net/download)
+It soports arm64 for raspberry pi or orange pi
 
 
 ## Create your bot in telegram
@@ -27,6 +28,8 @@ To receive notifications about product changes, you need to create a bot.
 In the response find the **chat.id** and set it in **TELEGRAM_BOT_CHAT_ID** inside your .env file
 
 ## Run the project
+
+USE YARN insted of NPM
 
 It's divided by 2 important files
 
