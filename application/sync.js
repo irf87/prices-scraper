@@ -88,12 +88,7 @@ const syncProductScrapedSnap = async () => {
       date: productScrapedSnap.date,
     };
 
-    let docResponse;
-    try {
-      docResponse = await ravenInstance.querySingle('productScrapedRecordsSnap', 'productScrapedId', masterKey);
-    } catch(err) {
-      console.error(err);
-    }
+    const docResponse = await ravenInstance.querySingle('productScrapedRecordsSnap', 'productScrapedId', masterKey);
     
     if (docResponse) {
       if (!toUpdate[masterKey]) {
