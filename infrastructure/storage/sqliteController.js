@@ -1,5 +1,19 @@
+require('dotenv').config();
+
+const DEBUG	= process.env._IS_DEBUG;
+const isDebug = DEBUG === 'true'
+
 const Database = require('better-sqlite3');
-const db = new Database('price_scraper.db', { verbose: console.log, fileMustExist: true });
+
+const options = {
+  fileMustExist: true,
+};
+
+if (isDebug) {
+  options.verbose = console.log;
+}
+
+const db = new Database('price_scraper.db', options);
 
 const { transform } = require('../../utils/paramsTransformer');
 

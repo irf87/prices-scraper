@@ -81,7 +81,6 @@ class ravenDB {
 
   openSession() {
     if (this.session) {
-      console.log('ABRIR SESSION');
       this.session.dispose();
     }
     this.session = store.openSession();
