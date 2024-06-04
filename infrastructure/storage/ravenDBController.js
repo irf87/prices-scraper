@@ -52,14 +52,24 @@ class ravenDB {
   
   async querySingle(collection, field, condition) {
     this.openSession();
-    const result = await this.session.query(collection).whereEquals(field, condition).single();
+    let result;
+    try {
+      result = await this.session.query(collection).whereEquals(field, condition).single();
+    } catch (err) {
+      console.error(err);
+    }
     this.session.dispose();
     return result;
   }
 
   async query(collection) {
     this.openSession();
-    const result = await this.session.query({ collection }).all();
+    let result = [];
+    try {
+      result = await this.session.query({ collection }).all();
+    } catch (err) {
+      console.error(err);
+    }
     this.session.dispose();
     return result;
   }
@@ -81,7 +91,6 @@ class ravenDB {
 
   openSession() {
     if (this.session) {
-      console.log('ABRIR SESSION');
       this.session.dispose();
     }
     this.session = store.openSession();

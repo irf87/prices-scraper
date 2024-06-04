@@ -88,10 +88,7 @@ const syncProductScrapedSnap = async () => {
       date: productScrapedSnap.date,
     };
 
-    let docResponse;
-    try {
-      docResponse = await ravenInstance.querySingle('productScrapedRecordsSnap', 'productScrapedId', masterKey);
-    } catch(err) { }
+    const docResponse = await ravenInstance.querySingle('productScrapedRecordsSnap', 'productScrapedId', masterKey);
     
     if (docResponse) {
       if (!toUpdate[masterKey]) {
@@ -169,7 +166,6 @@ const syncProductScrapedSnap = async () => {
 const resetSyncProductScraped = async (resetCollection) => {
   await productScrapedCtrl.updateProductScraped('last_date_sync IS NOT NULL', { last_date_sync: null });
   if (resetCollection) {
-    console.log('intenta eliminar');
     await ravenInstance.deleteCollection('productsScraped');
   }
   return { success: true, resetCollection };
