@@ -17,7 +17,6 @@ const syncProductScraped = async () => {
   const row = dbInstance.execute(query);
   const list = row.all();
 
-
   const session = ravenInstance.getSession();
   const bulkInsert = ravenInstance.bulkInsert();
 
@@ -25,9 +24,6 @@ const syncProductScraped = async () => {
     let newDocument = {
       ...productScraped,
       date: currentDate,
-      "@metadata": {
-        "@collection": 'productsScraped',
-      }
     };
     const masterKey = productScraped.product_scraped_id;
     
@@ -41,9 +37,12 @@ const syncProductScraped = async () => {
         ...docResponse,
         ...newDocument,
       }
-      await bulkInsert.store(newDocument);
+      await ravenInstance.update(newDocument);
     } else {
       newDocument._id = newDocument.id;
+      newDocument['@metadata'] = {
+        "@collection": 'productsScraped',
+      }
       await bulkInsert.store({...newDocument}, `productsScraped/${newDocument._id}`, {
         '@collection': 'productsScraped'
       });

@@ -44,7 +44,7 @@ const getProductScrapedRecords = async (productScrapedId) => {
   const session = ravenInstance.getSession();
   if (productScrapedId) {
     try {
-      result = await session.query({ collection: 'productScrapedRecordsSnap' }).whereEquals('productScrapedId', productScrapedId).single();
+      result = await session.query({ collection: 'productScrapedRecordsSnap' }).whereEquals('productScrapedId', Number(productScrapedId)).all();
     } catch(err) {}
   } else {
     try {
