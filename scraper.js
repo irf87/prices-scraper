@@ -6,7 +6,6 @@ const SCRAPPER_INTERVAL_SYNC_TIME = process.env.SCRAPPER_INTERVAL_SYNC_TIME;
 const SCRAPPER_INTERVAL_SYNC_UNIT = process.env.SCRAPPER_INTERVAL_SYNC_UNIT;
 const SCRAPPER_INTERVAL_SYNC_ENABLED = process.env.SCRAPPER_INTERVAL_SYNC_ENABLED;
 
-const axios = require('axios');
 const cheerio = require('cheerio');
 const scraperCtrl = require('./presentation/scraped/controller');
 const productCtrl = require('./presentation/products/controller');
@@ -20,6 +19,8 @@ const CL_TelegramBot = require('./utils/notifications/telegramBot');
 
 const { toUpdateNotificationDate } = require('./utils/notifications/transformer');
 const { parseToMiliseconds } = require('./utils/time');
+
+const fetch = require('./infrastructure/api/getPage');
 
 let toScraping = [];
 let cont = 0;
@@ -45,7 +46,7 @@ const executeScraping = async (scraper, cont) => {
       return;
     }
 
-    const { data, error } = await axios(scraper.url_to_scrape);
+    const { data, error } = await fetch(scraper.url_to_scrape);
 
     if (error) {
       executeScraping(toScraping[cont], cont);
