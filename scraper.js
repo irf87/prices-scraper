@@ -19,6 +19,7 @@ const CL_TelegramBot = require('./utils/notifications/telegramBot');
 
 const { toUpdateNotificationDate } = require('./utils/notifications/transformer');
 const { parseToMiliseconds } = require('./utils/time');
+const { printDate } = require('./utils/date/printDate');
 
 const fetch = require('./infrastructure/api/getPage');
 
@@ -33,6 +34,9 @@ const telegram = new CL_TelegramBot();
 
 const executeScraping = async (scraper, cont) => {
   if (cont >= arrayLength) {
+    console.log('\nFINISH SCRAPING AT');
+    printDate();
+    console.log('\n');
     // telegram.stop();
     // process.exit();
     return;
@@ -114,6 +118,9 @@ const executeScraping = async (scraper, cont) => {
 function execute() {
   scraperCtrl.getEnables().then((rows) => {
     if (rows.length > 0) {
+      console.log('\nSTART SCRAPING AT');
+      printDate();
+      console.log('\n');
       toScraping = rows;
       arrayLength = rows.length;
       executeScraping(toScraping[cont], cont);
@@ -122,8 +129,14 @@ function execute() {
 }
 
 const executeAutoSyncs = async () => {
+  console.log('\nSTART SYNC AT');
+  printDate();
+  console.log('\n');
   await syncCtrl.syncProductScraped();
   await syncCtrl.syncProductScrapedSnap();
+  console.log('\nFINISH SYNC AT');
+  printDate();
+  console.log('\n');
 }
 
 execute();
