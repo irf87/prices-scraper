@@ -2,8 +2,6 @@ const humps = require('humps');
 
 const parseParams = (req, res, next) => {
   if (req.body) {
-    console.log(typeof req.body);
-    console.log(req.body);
     req.body = humps.decamelizeKeys(req.body);
   }
   const originalSend = res.send;
