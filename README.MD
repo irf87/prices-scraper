@@ -13,6 +13,12 @@
 4. You need [ravendb](https://ravendb.net/download)
 It soports arm64 for raspberry pi or orange pi
 
+5. You need playwright
+
+    ```
+    npx playwright install
+    ```
+
 
 ## Create your bot in telegram
 To receive notifications about product changes, you need to create a bot.

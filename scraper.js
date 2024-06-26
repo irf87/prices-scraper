@@ -21,7 +21,7 @@ const { toUpdateNotificationDate } = require('./utils/notifications/transformer'
 const { parseToMiliseconds } = require('./utils/time');
 const { printDate } = require('./utils/date/printDate');
 
-const fetch = require('./infrastructure/api/getPage');
+const getHtml = require('./application/get-html-by-url');
 
 let toScraping = [];
 let cont = 0;
@@ -50,12 +50,13 @@ const executeScraping = async (scraper, cont) => {
       return;
     }
 
-    const { data, error } = await fetch(scraper.url_to_scrape);
+    const { data, error } = await getHtml(scraper.url_to_scrape, scraper.getting_mode);
 
     if (error) {
       executeScraping(toScraping[cont], cont);
       return;
     }
+
     const $ = cheerio.load(data);
     const dom = new DomAnalyzer($, data);
 
@@ -76,6 +77,7 @@ const executeScraping = async (scraper, cont) => {
     const price = await promisePrice;
     const stock = await promiseStock;
     const availability = await promiseAvailability;
+
     if (dom.isDisabled) {
       scraperCtrl.update(scraper.id, { enable: 0});
       const disabledMsg = t('DISABLE_SCRAPER_PRODUCT', {id: scraper.id, name: product.name });
