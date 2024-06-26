@@ -43,6 +43,10 @@ const testScraper = async ({ query_selector, url, mode }) => {
   return await resp;
 }
 
+const suggestSelectors = async ({ url }) => {
+  return null;
+}
+
 const scrapedCtrl = {
   create,
   getEnables,
@@ -50,6 +54,7 @@ const scrapedCtrl = {
   remove,
   update,
   testScraper,
+  suggestSelectors,
 };
 
 module.exports = scrapedCtrl;
