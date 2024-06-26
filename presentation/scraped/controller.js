@@ -1,5 +1,5 @@
-const axios = require('axios');
 const cheerio = require('cheerio');
+const getHtml = require('../../application/get-html-by-url');
 
 const DomAnalyzer = require('../../utils/domAnalyzer');
 const scraped = require('../../application/scraped');
@@ -24,12 +24,12 @@ const update = async (id, params) => {
   return await scraped.update(id, params);
 }
 
-const testScraper = async ({ query_selector, url }) => {
+const testScraper = async ({ query_selector, url, mode }) => {
   const querySelector = query_selector;
   if(!querySelector || !url) {
     return { error: 'missing params' };
   }
-  const { data, error } = await axios(url);
+  const { data, error } = await getHtml(url, mode);
   if (error) {
     return error;
   }
@@ -43,6 +43,10 @@ const testScraper = async ({ query_selector, url }) => {
   return await resp;
 }
 
+const suggestSelectors = async ({ url }) => {
+  return null;
+}
+
 const scrapedCtrl = {
   create,
   getEnables,
@@ -50,6 +54,7 @@ const scrapedCtrl = {
   remove,
   update,
   testScraper,
+  suggestSelectors,
 };
 
 module.exports = scrapedCtrl;

@@ -1,16 +1,19 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
 const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
+const GETTING_MODE_TYPES = require('../utils/gettingModeTypes');
+
 const createProduct = async (params) =>  {
   const {
     name,
     description,
     url_info,
     url_img,
+    getting_mode = GETTING_MODE_TYPES.FETCH,
   } = params;
 
   const newProduct = dbInstance.prepareInsert('product', params);
-  const info = newProduct.run(name, description, url_info, url_img);
+  const info = newProduct.run(name, description, url_info, url_img, getting_mode);
 
   return { success: info.changes >= 1 ? true : false };
 }
