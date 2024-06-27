@@ -1,9 +1,13 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
+const GETTING_MODE_TYPES = require('../utils/gettingModeTypes');
 
 const create = async (params) => {
   const today = new Date();
   params.create_at = today.toISOString();
   params.update_at = '';
+  if(!params.getting_mode) {
+    params.getting_mode = GETTING_MODE_TYPES.FETCH;
+  }
   const newScraped = dbInstance.prepareInsert('product_scraped', params);
   const info = newScraped.run(...Object.values(params));
   return { success: info.changes >= 1 ? true : false };
