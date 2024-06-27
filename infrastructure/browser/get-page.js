@@ -1,5 +1,5 @@
 const jsdom = require('jsdom');
-const { chromium, firefox } = require('playwright');
+const { firefox } = require('playwright');
 const { JSDOM } = jsdom;
 
 const getHtmlByRender = async (url) => {
