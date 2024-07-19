@@ -1,8 +1,14 @@
+require('dotenv').config();
 const dbInstance = require('../infrastructure/storage/sqliteController');
 const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
 const productScrapedCtrl = require('../application/product-scraped');
 const scrapedSnapCtrl = require('../application/scraped-snap');
+
+const { printDate } = require('../utils/date/printDate');
+
+const DEBUG	= process.env._IS_DEBUG;
+const isDebug = DEBUG === 'true'
 
 const syncProductScraped = async () => {
   const currentDate = new Date().toISOString();
@@ -56,6 +62,9 @@ const syncProductScraped = async () => {
 }
 
 const syncProductScrapedSnap = async () => {
+  if (isDebug) {
+    console.log(`\nsyncProductScrapedSnap start at ${printDate()}`);
+  }
   const currentDate = new Date().toISOString();
   let query = `SELECT product_scraped_snap.id, product_scraped_snap.product_scraped_id, product_scraped.product_id,product.name, 
   product_scraped.url_to_scrape, product_scraped_snap.price, product_scraped_snap.availability, product_scraped_snap.stock, product_scraped_snap.date
@@ -75,6 +84,10 @@ const syncProductScrapedSnap = async () => {
 
   const toUpdate = {};
   const toCreate = {};
+
+  if (isDebug) {
+    console.log(`ToSync ${list.length}`);
+  }
 
   for (const productScrapedSnap of list) {
     const masterKey = productScrapedSnap.product_scraped_id;
@@ -120,8 +133,10 @@ const syncProductScrapedSnap = async () => {
     }
   }
   ravenInstance.closeSession();
-
-    for (const masterKey of masterKeysList) {
+  if (isDebug) {
+    console.log(`To get AVG ${masterKeysList.length}`);
+  }
+  for (const masterKey of masterKeysList) {
     let isCreate = true;
     let docResponse;
     if (toUpdate[masterKey]) {
@@ -151,7 +166,9 @@ const syncProductScrapedSnap = async () => {
        '@collection': 'productScrapedRecordsSnap'
     });
   }
-
+  if (isDebug) {
+    console.log('UPDATED BULK');
+  }
   await bulkInsert.finish();
 
   for (const key of updateKeys) {
@@ -159,6 +176,9 @@ const syncProductScrapedSnap = async () => {
   }
   
   ravenInstance.closeSession();
+  if (isDebug) {
+    console.log(`\nsyncProductScrapedSnap finish at ${printDate()}`);
+  }
   return { success: true, sync: list.length };
 }
 
