@@ -11,7 +11,8 @@ const fetch = async (url) => {
   try {
     const { data, error } = await axios(url);
     if (isDebug) {
-      onsole.log(`\nfetch start at ${printDate()}`);
+      console.log('\nfetch start at');
+      printDate();
       console.log(`get:url ${url}`);
     }
     dataResp = data;
@@ -27,7 +28,8 @@ const fetch = async (url) => {
     errorResp = err;
   }
   if (isDebug) {
-    console.log(`fetch finish at ${printDate()}`);
+    console.log('fetch finish at');
+    printDate();
   }
   return {
     data: dataResp,
