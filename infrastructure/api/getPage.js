@@ -22,7 +22,7 @@ const fetch = async (url) => {
 
   } catch(err) {
     if (isDebug) {
-      console.log(`\nget:error ${error}`);
+      console.log(`\nget:error ${err}`);
     }
     errorResp = err;
   }
