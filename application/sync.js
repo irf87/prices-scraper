@@ -63,7 +63,8 @@ const syncProductScraped = async () => {
 
 const syncProductScrapedSnap = async () => {
   if (isDebug) {
-    console.log(`\nsyncProductScrapedSnap start at ${printDate()}`);
+    console.log(`\nsyncProductScrapedSnap start at`);
+    printDate();
   }
   const currentDate = new Date().toISOString();
   let query = `SELECT product_scraped_snap.id, product_scraped_snap.product_scraped_id, product_scraped.product_id,product.name, 
@@ -89,8 +90,14 @@ const syncProductScrapedSnap = async () => {
     console.log(`ToSync ${list.length}`);
   }
 
+  let index = 0;
+
   for (const productScrapedSnap of list) {
     const masterKey = productScrapedSnap.product_scraped_id;
+    if (isDebug) {
+      console.log(`i:${index}/${list.length}`);
+      index++;
+    }
     if (masterKeysList.indexOf(masterKey) < 0) masterKeysList.push(masterKey);
     const oSnap = {
       id: productScrapedSnap.id,
@@ -177,7 +184,8 @@ const syncProductScrapedSnap = async () => {
   
   ravenInstance.closeSession();
   if (isDebug) {
-    console.log(`\nsyncProductScrapedSnap finish at ${printDate()}`);
+    console.log(`\nsyncProductScrapedSnap finish at`);
+    printDate();
   }
   return { success: true, sync: list.length };
 }
