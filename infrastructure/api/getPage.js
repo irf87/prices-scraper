@@ -16,14 +16,14 @@ const fetch = async (url) => {
       console.log(`get:url ${url}`);
     }
     dataResp = data;
-    if (isDebug) {
-      console.log(`\nget:error ${error}`);
+    if (isDebug && error) {
+      console.log(`get:error ${error}`);
     }
     errorResp = error;
 
   } catch(err) {
     if (isDebug) {
-      console.log(`\nget:error ${err}`);
+      console.log(`get:error ${err}`);
     }
     errorResp = err;
   }
