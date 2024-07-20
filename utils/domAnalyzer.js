@@ -47,11 +47,20 @@ class DomAnalyzer {
 
   readText(domSelector = '', callBack = () => {}) {
     const context = this;
+    const timer = setTimeout(() => {
+      this.isDisabled = true;
+      if (isDebug) {
+        console.log(`fail:readText:timeout ${DEFAULT_TIMEOUT}`);
+      }
+      callBack('');
+    }, DEFAULT_TIMEOUT);
     try{
       this.$(domSelector, this.html).each((i, element) => {
+        clearTimeout(timer);
         callBack(context.$(element).text());
       });
     } catch(err) {
+      clearTimeout(timer);
       if (isDebug) {
         console.log(`fail:readText: ${err}`);
         callBack('');
