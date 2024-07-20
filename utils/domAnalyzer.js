@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const DEFAULT_TIMEOUT = process.env.TIMEOUT_ANALIZER || 1000;
+const DEBUG	= process.env._IS_DEBUG;
+const isDebug = DEBUG === 'true'
 class DomAnalyzer {
   constructor ($, html) {
     this.$ = $;
@@ -11,6 +13,9 @@ class DomAnalyzer {
   getPrice(domSelector, resolve = () => {}) {
     const timer = setTimeout(() => {
       this.isDisabled = true;
+      if (isDebug) {
+        console.log(`fail:getPrice:timeout ${DEFAULT_TIMEOUT}`);
+      }
       resolve(0);
     }, DEFAULT_TIMEOUT);
     this.readText(domSelector, (text) => {
@@ -42,9 +47,16 @@ class DomAnalyzer {
 
   readText(domSelector = '', callBack = () => {}) {
     const context = this;
-    this.$(domSelector, this.html).each(function() {
-      callBack(context.$(this).text());
-    });
+    try{
+      this.$(domSelector, this.html).each((i, element) => {
+        callBack(context.$(element).text());
+      });
+    } catch(err) {
+      if (isDebug) {
+        console.log(`fail:readText: ${err}`);
+        callBack('');
+      }
+    }
   }
 }
 
