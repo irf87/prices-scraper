@@ -23,6 +23,9 @@ const { printDate } = require('./utils/date/printDate');
 
 const getHtml = require('./application/get-html-by-url');
 
+const DEBUG	= process.env._IS_DEBUG;
+const isDebug = DEBUG === 'true'
+
 let toScraping = [];
 let cont = 0;
 let arrayLength = 0;
@@ -53,6 +56,10 @@ const executeScraping = async (scraper, cont) => {
     const { data, error } = await getHtml(scraper.url_to_scrape, scraper.getting_mode);
 
     if (error) {
+      if (isDebug) {
+        console.log(`fail:${scraper.url_to_scrape}`);
+        console.log(`error:${error}`);
+      }
       executeScraping(toScraping[cont], cont);
       return;
     }
