@@ -1,5 +1,4 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
-const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
 const createProduct = async (params) =>  {
   const {
@@ -31,18 +30,12 @@ const getProduct = async (id) => {
 }
 
 const getProductScraped = async (isQueryCommand = false) => {
-  if (isQueryCommand) {
-    let docResponse = [];
-    try {
-      const session = ravenInstance.getSession();
-      docResponse = await session.query({ collection: 'productsScraped' }).whereEquals('enable', 1).all();
-    } catch(err) {}
-    ravenInstance.closeSession();
-    return docResponse;
-  } else {
-    let query = `
-    SELECT product.id, product.name, product.description, product.url_info, product.url_img, 
+  let query = `
+    SELECT 
+    product.id,
     product_scraped.id as product_scraped_id,
+    product.name, product.description,
+    product.url_info, product.url_img, 
     product_scraped.url_to_scrape, last_snap.price, last_snap.date
     FROM product_scraped
     JOIN product ON product_scraped.product_id = product.id
@@ -55,7 +48,6 @@ const getProductScraped = async (isQueryCommand = false) => {
     WHERE product_scraped.enable = 1`;
     const row = dbInstance.execute(query);
     return row.all();
-  }
 }
 
 const product = {
