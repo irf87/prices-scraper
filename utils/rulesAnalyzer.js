@@ -71,7 +71,7 @@ class RulesAnalyzer {
           date: this.date,
         });
     }
-    if (this.isValidRule(rules.PRICE_HIGHER) === 'number'
+    if (this.isValidRule(rules.PRICE_HIGHER)
       && this.price >= this.getRuleVal(rules.PRICE_HIGHER)
       && canSendNotification(prop[rules.PRICE_HIGHER], this.rules, this.date)) {
         this.notificationsToSend.push({
@@ -83,7 +83,7 @@ class RulesAnalyzer {
           date: this.date,
         });
     }
-    if (this.isValidRule(rules.PRICE_LOWER) === 'number'
+    if (this.isValidRule(rules.PRICE_LOWER)
       && this.price <= this.getRuleVal(rules.PRICE_LOWER)
       && canSendNotification(prop[rules.PRICE_LOWER], this.rules, this.date)) {
         this.notificationsToSend.push({

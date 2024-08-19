@@ -1,8 +1,17 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
-const ravenInstance = require('../infrastructure/storage/ravenDBController');
 
 const getProductHistory = async (productId) => {
   const query = `SELECT * FROM product_scraped_snap WHERE product_id=${productId}`;
+  const row = dbInstance.execute(query);
+  return row.all();
+}
+
+const getProductDetailOfScrapred = async (productScrapedId) => {
+  let query = `SELECT product.id AS product_id, product.name,
+  product_scraped.url_to_scrape, product_scraped.id AS scraped_id
+  FROM product_scraped
+  JOIN product ON product_scraped.product_id = product.id
+  WHERE product_scraped.id = ${productScrapedId}`;
   const row = dbInstance.execute(query);
   return row.all();
 }
@@ -40,19 +49,24 @@ const updateScrapedSnap = async (condition, params) => {
 }
 
 const getProductScrapedRecords = async (productScrapedId) => {
-  let result = [];
-  const session = ravenInstance.getSession();
-  if (productScrapedId) {
-    try {
-      result = await session.query({ collection: 'productScrapedRecordsSnap' }).whereEquals('productScrapedId', Number(productScrapedId)).all();
-    } catch(err) {}
-  } else {
-    try {
-      result = await session.query({ collection: 'productScrapedRecordsSnap' }).all();
-    }
-    catch(err) {}
-  }
-  return result;
+  let query = `SELECT product_scraped_snap.id, product_scraped_snap.price, product_scraped_snap.availability,
+  product_scraped_snap.stock, product_scraped_snap.date
+  FROM product_scraped_snap
+  JOIN product_scraped ON product_scraped_snap.product_scraped_id = product_scraped.id
+  JOIN product ON product_scraped.product_id = product.id
+  WHERE product_scraped_snap.product_scraped_id = ${productScrapedId}
+  ORDER BY datetime(product_scraped_snap.date) ASC;`;
+  const row = dbInstance.execute(query);
+  const list = row.all();
+
+  const [avg] = await getAvg(productScrapedId);
+  const [product] = await getProductDetailOfScrapred(productScrapedId);
+
+  return {
+    ...product,
+    ...avg,
+    records: list,
+  };
 }
 
 const scrapedSnap = {

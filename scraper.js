@@ -127,6 +127,7 @@ const executeScraping = async (scraper, cont) => {
 function execute() {
   scraperCtrl.getEnables().then((rows) => {
     if (rows.length > 0) {
+      cont = 0;
       console.log('\nSTART SCRAPING AT');
       printDate();
       console.log('\n');
