@@ -8,7 +8,6 @@ const express = require('express'),
 const productsUri = require('./presentation/products/view');
 const scraperUri = require('./presentation/scraped/view');
 const scraperNotificationsUri = require('./presentation/notifications/view');
-const syncUri = require('./presentation/sync/view');
 const reportsUri = require('./presentation/reports/view');
 
 const port = process.env._PORT || 8081;
@@ -24,7 +23,6 @@ console.log(`ruta ${__dirname}`);
 app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);
 app.use('/api/notifications', scraperNotificationsUri);
-app.use('/api/sync', syncUri);
 app.use('/api/reports', reportsUri);
 
 // catch 404 and forward to error handler
