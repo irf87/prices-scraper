@@ -10,7 +10,7 @@ const create = async (params) => {
   }
   const newScraped = dbInstance.prepareInsert('product_scraped', params);
   const info = newScraped.run(...Object.values(params));
-  return { success: info.changes >= 1 ? true : false };
+  return { success: info.changes >= 1 ? true : false, id: info.lastInsertRowid };
 }
 
 const getEnables = async (params) => {

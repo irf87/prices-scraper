@@ -11,7 +11,7 @@ const createProduct = async (params) =>  {
   const newProduct = dbInstance.prepareInsert('product', params);
   const info = newProduct.run(name, description, url_info, url_img);
 
-  return { success: info.changes >= 1 ? true : false };
+  return { success: info.changes >= 1 ? true : false, id: info.lastInsertRowid };
 }
 
 const updateProduct = async (id, params) => {
