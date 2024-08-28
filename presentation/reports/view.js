@@ -1,7 +1,9 @@
 const express = require('express'),
 	router = express.Router();
-
+const parseParams = require('../../middleware/parseParams');
 const ctrl = require('./controller');
+
+router.use(parseParams);
 
 router.get('/product-scraped',(req, res) => {
   ctrl.getScrapedSnapReport(req?.query?.id).then((respond) => {
