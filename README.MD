@@ -10,10 +10,8 @@
     ```
     sudo apt install sqlite3
     ```
-4. You need [ravendb](https://ravendb.net/download)
-It soports arm64 for raspberry pi or orange pi
 
-5. You need playwright
+4. You need playwright
 
     ```
     npx playwright install
@@ -55,3 +53,8 @@ In there you can add products, rules and the page where the program scrapes
 ### scaper.js
 
 It's the core, you can run at once and set the interval in the env file with the property SCRAPPER_INTERVAL_TIME, if match with you rules it send you a notification in your telegram bot.
+
+
+## If you want the client of this project
+
+ [Client APP](https://github.com/irf87/price-scraper-app)
