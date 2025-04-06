@@ -1,0 +1,34 @@
+openapi: 3.0.0
+info:
+  title: Prices Scraper API
+  description: API for managing product scraping, notifications, and reports
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:${_PORT}/api
+    description: Local development server
+
+paths:
+  /products:
+    $ref: './paths/products.yaml#/products'
+  /products/scraped:
+    $ref: './paths/products.yaml#/products_scraped'
+  /products/{id}:
+    $ref: './paths/products.yaml#/products_id'
+
+  /scraper:
+    $ref: './paths/scraper.yaml#/scraper'
+  /scraper/test:
+    $ref: './paths/scraper.yaml#/scraper_test'
+  /scraper/enables:
+    $ref: './paths/scraper.yaml#/scraper_enables'
+  /scraper/{id}:
+    $ref: './paths/scraper.yaml#/scraper_id'
+
+  /notifications:
+    $ref: './paths/notifications.yaml#/notifications'
+  /notifications/{id}:
+    $ref: './paths/notifications.yaml#/notifications_id'
+
+  /reports/product-scraped:
+    $ref: './paths/reports.yaml#/reports_product_scraped' 

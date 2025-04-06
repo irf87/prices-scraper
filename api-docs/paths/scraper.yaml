@@ -1,0 +1,322 @@
+scraper:
+  get:
+    summary: Get all scrapers
+    tags:
+      - Scraper
+    responses:
+      '200':
+        description: List of all scrapers
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Scraper ID
+                  productId:
+                    type: integer
+                    description: ID of the associated product
+                  urlToScrape:
+                    type: string
+                    description: URL of the page to scrape
+                  priceDomSelector:
+                    type: string
+                    description: CSS selector for the price element
+                  stockDomSelector:
+                    type: string
+                    description: CSS selector for the stock element
+                  availableDomSelector:
+                    type: string
+                    description: CSS selector for the availability element
+                  enable:
+                    type: integer
+                    description: Enable flag (1 for enabled, 0 for disabled)
+                  gettingMode:
+                    type: string
+                    description: Mode to get HTML (FETCH or RENDER)
+                    enum: [FETCH, RENDER]
+      '400':
+        description: Bad request
+  post:
+    summary: Create a new scraper
+    tags:
+      - Scraper
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product_id:
+                type: integer
+                description: ID of the product to scrape
+              url_to_scrape:
+                type: string
+                description: URL of the page to scrape. It could be the product URL from Amazon or Mercado Libre. 
+              price_dom_selector:
+                type: string
+                description: CSS selector for the price element of the page to scrape
+              stock_dom_selector:
+                type: string
+                description: CSS selector for the stock element (optional)
+              available_dom_selector:
+                type: string
+                description: CSS selector for the availability element
+              enable:
+                type: integer
+                description: Enable flag (1 for enabled, 0 for disabled)
+            required:
+              - product_id
+              - url_to_scrape
+              - price_dom_selector
+              - available_dom_selector
+              - enable
+          example:
+            product_id: 1
+            url_to_scrape: "https://www.amazon.com.mx/Apple-iPhone-Pro-MAX-256/dp/B0DGJFC6XS"
+            price_dom_selector: "#corePrice_feature_div > div > div > span.a-price.aok-align-center > span:nth-child(2) > span.a-price-whole"
+            stock_dom_selector: ""
+            available_dom_selector: "#availability > span"
+            enable: 1
+    responses:
+      '200':
+        description: Scraper created successfully
+      '400':
+        description: Bad request
+
+scraper_test:
+  post:
+    summary: Test a scraper, put the query_selector and url of the page to know if the scraper can get the value of the query_selector
+    tags:
+      - Scraper
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              query_selector:
+                type: string
+                description: CSS selector to test
+              url:
+                type: string
+                description: URL to scrape
+              mode:
+                type: string
+                description: Mode to get HTML (FETCH or RENDER), use RENDER for dynamic pages
+                enum: [FETCH, RENDER]
+            required:
+              - query_selector
+              - url
+          example:
+            query_selector: "#__next > main > div.min-vh-100 > section.o-product__detail > div > main > div.o-product__description.liverpool > div.m-product__price-dw-promotion > div > div > div > p.a-product__paragraphDiscountPrice.m-0.d-inline"
+            url: "https://www.liverpool.com.mx/tienda/pdp/apple-iphone-16-super-retina-xdr-6.1-pulgadas-reacondicionado/99979548495?skuid=1168823467"
+            mode: "RENDER"
+    responses:
+      '200':
+        description: Scraper test results
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                respond:
+                  type: string
+                  description: The text content of the selected element
+      '400':
+        description: Bad request
+
+scraper_enables:
+  get:
+    summary: Get all enabled scrapers
+    tags:
+      - Scraper
+    responses:
+      '200':
+        description: List of enabled scrapers
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Scraper ID
+                  productId:
+                    type: integer
+                    description: ID of the associated product
+                  urlToScrape:
+                    type: string
+                    description: URL of the page to scrape
+                  priceDomSelector:
+                    type: string
+                    description: CSS selector for the price element
+                  stockDomSelector:
+                    type: string
+                    description: CSS selector for the stock element
+                  availableDomSelector:
+                    type: string
+                    description: CSS selector for the availability element
+                  enable:
+                    type: integer
+                    description: Enable flag (1 for enabled, 0 for disabled)
+                  gettingMode:
+                    type: string
+                    description: Mode to get HTML (FETCH or RENDER)
+                    enum: [FETCH, RENDER]
+      '400':
+        description: Bad request
+
+scraper_id:
+  get:
+    summary: Get a specific scraper
+    tags:
+      - Scraper
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Scraper ID (optional, if not provided returns all scrapers)
+    responses:
+      '200':
+        description: Scraper details or list of all scrapers if no ID provided
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Scraper ID
+                    productId:
+                      type: integer
+                      description: ID of the associated product
+                    urlToScrape:
+                      type: string
+                      description: URL of the page to scrape
+                    priceDomSelector:
+                      type: string
+                      description: CSS selector for the price element
+                    stockDomSelector:
+                      type: string
+                      description: CSS selector for the stock element
+                    availableDomSelector:
+                      type: string
+                      description: CSS selector for the availability element
+                    enable:
+                      type: integer
+                      description: Enable flag (1 for enabled, 0 for disabled)
+                    gettingMode:
+                      type: string
+                      description: Mode to get HTML (FETCH or RENDER)
+                      enum: [FETCH, RENDER]
+                - type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: Scraper ID
+                      productId:
+                        type: integer
+                        description: ID of the associated product
+                      urlToScrape:
+                        type: string
+                        description: URL of the page to scrape
+                      priceDomSelector:
+                        type: string
+                        description: CSS selector for the price element
+                      stockDomSelector:
+                        type: string
+                        description: CSS selector for the stock element
+                      availableDomSelector:
+                        type: string
+                        description: CSS selector for the availability element
+                      enable:
+                        type: integer
+                        description: Enable flag (1 for enabled, 0 for disabled)
+                      gettingMode:
+                        type: string
+                        description: Mode to get HTML (FETCH or RENDER)
+                        enum: [FETCH, RENDER]
+      '400':
+        description: Bad request
+  put:
+    summary: Update a scraper
+    tags:
+      - Scraper
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Scraper ID
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              productId:
+                type: integer
+                description: ID of the product to scrape
+              urlToScrape:
+                type: string
+                description: URL of the page to scrape
+              priceDomSelector:
+                type: string
+                description: CSS selector for the price element
+              stockDomSelector:
+                type: string
+                description: CSS selector for the stock element
+              availableDomSelector:
+                type: string
+                description: CSS selector for the availability element
+              enable:
+                type: integer
+                description: Enable flag (1 for enabled, 0 for disabled)
+              gettingMode:
+                type: string
+                description: Mode to get HTML (FETCH or RENDER)
+                enum: [FETCH, RENDER]
+          example:
+            productId: 2
+            urlToScrape: "https://www.cyberpuerta.mx/Computo-Hardware/Discos-Duros-SSD-NAS/SSD/SSD-Acer-SA100-120GB-SATA-III-2-5.html"
+            priceDomSelector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.mainPrice > span"
+            stockDomSelector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.stock > span > span"
+            availableDomSelector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.stock > span"
+            enable: 0
+            gettingMode: "FETCH"
+    responses:
+      '200':
+        description: Scraper updated successfully
+      '400':
+        description: Bad request
+  delete:
+    summary: Delete a scraper
+    tags:
+      - Scraper
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Scraper ID
+    responses:
+      '200':
+        description: Scraper deleted successfully
+      '400':
+        description: Bad request 

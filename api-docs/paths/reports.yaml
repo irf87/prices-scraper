@@ -1,0 +1,16 @@
+reports_product_scraped:
+  get:
+    summary: Get product scraped report
+    tags:
+      - Reports
+    parameters:
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Product ID
+    responses:
+      '200':
+        description: Product scraped report
+      '400':
+        description: Bad request 

@@ -1,0 +1,122 @@
+notifications:
+  post:
+    summary: Create rules for scraped products, if conditions are met, send a notification
+    tags:
+      - Notifications
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product_scraped_id:
+                type: integer
+                description: ID of the scraped product to monitor
+              match:
+                type: string
+                description: Text to match in the product (optional)
+              notify_when_is_available:
+                type: boolean
+                description: Whether to notify when product becomes available
+              notify_price_smaller_equal_than:
+                type: number
+                description: Notify when price is less than or equal to this value
+              notify_price_more_equal_than:
+                type: number
+                description: Notify when price is more than or equal to this value
+              notify_stock_changes:
+                type: boolean
+                description: Whether to notify on stock changes
+              notify_price_changes:
+                type: boolean
+                description: Whether to notify on price changes
+              notify_availability_changes:
+                type: boolean
+                description: Whether to notify on availability changes
+            required:
+              - product_scraped_id
+          example:
+            product_scraped_id: 122
+            match: ""
+            notify_when_is_available: false
+            notify_price_smaller_equal_than: 1600
+            notify_price_more_equal_than: 2500
+            notify_stock_changes: false
+            notify_price_changes: false
+            notify_availability_changes: false
+    responses:
+      '200':
+        description: Notification created successfully
+      '400':
+        description: Bad request
+
+notifications_id:
+  get:
+    summary: Get a specific notification
+    tags:
+      - Notifications
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Notification ID
+    responses:
+      '200':
+        description: Notification details
+      '400':
+        description: Bad request
+  put:
+    summary: Update a notification
+    tags:
+      - Notifications
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Notification ID
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              match:
+                type: string
+                description: Text to match in the product (optional)
+              notify_when_is_available:
+                type: boolean
+                description: Whether to notify when product becomes available (optional)
+              notify_price_smaller_equal_than:
+                type: number
+                description: Notify when price is less than or equal to this value (optional)
+              notify_price_more_equal_than:
+                type: number
+                description: Notify when price is more than or equal to this value (optional)
+              notify_stock_changes:
+                type: boolean
+                description: Whether to notify on stock changes (optional)
+              notify_price_changes:
+                type: boolean
+                description: Whether to notify on price changes (optional)
+              notify_availability_changes:
+                type: boolean
+                description: Whether to notify on availability changes (optional)
+          example:
+            match: ""
+            notify_when_is_available: false
+            notify_price_smaller_equal_than: 1600
+            notify_price_more_equal_than: 2500
+            notify_stock_changes: false
+            notify_price_changes: false
+            notify_availability_changes: false
+    responses:
+      '200':
+        description: Notification updated successfully
+      '400':
+        description: Bad request 

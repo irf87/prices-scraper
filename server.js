@@ -6,7 +6,7 @@ const express = require('express'),
 // Documentation
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const swaggerDocument = YAML.load(path.join(__dirname, 'api-docs/swagger.yaml'));
 
 // Load environment variables
 require('dotenv').config();
@@ -24,12 +24,24 @@ const reportsUri = require('./presentation/reports/view');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 console.log(`path ${__dirname}`);
 
 /* Paths */
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// Serve swagger files statically
+app.use('/api-docs', express.static(path.join(__dirname, 'api-docs')));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+	explorer: true,
+	swaggerOptions: {
+		urls: [
+			{
+				url: '/api-docs/swagger.yaml',
+				name: 'API Documentation'
+			}
+		]
+	}
+}));
 
 app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);

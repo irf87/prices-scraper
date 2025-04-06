@@ -1,0 +1,127 @@
+products:
+  post:
+    summary: Create a new product
+    tags:
+      - Products
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the product
+              description:
+                type: string
+                description: Detailed description of the product
+              url_info:
+                type: string
+                description: URL of the product page (optional)
+              url_img:
+                type: string
+                description: URL of the product image (optional)
+            required:
+              - name
+          example:
+            name: "Name of the product"
+            description: "A detailed description of the product (optional)"
+            url_info: "https://www.info.com/product/123 (optional)"
+            url_img: "https://www.info.com/product/123.jpg (optional)"
+    responses:
+      '200':
+        description: Product created successfully
+      '400':
+        description: Bad request
+  get:
+    summary: Get all products
+    tags:
+      - Products
+    responses:
+      '200':
+        description: List of products
+      '400':
+        description: Bad request
+
+products_scraped:
+  get:
+    summary: Get all enabled scraped products
+    tags:
+      - Products
+    responses:
+      '200':
+        description: List of scraped products
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Product ID
+                  name:
+                    type: string
+                    description: Product name
+                  description:
+                    type: string
+                    description: Product description
+                  url_info:
+                    type: string
+                    description: Product URL
+                  url_img:
+                    type: string
+                    description: Product image URL
+                  price:
+                    type: number
+                    description: Current product price
+                  last_update:
+                    type: string
+                    format: date-time
+                    description: Last price update timestamp
+      '400':
+        description: Bad request
+
+products_id:
+  put:
+    summary: Update a product
+    tags:
+      - Products
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Product ID
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the product (optional)
+              description:
+                type: string
+                description: Detailed description of the product (optional)
+              urlInfo:
+                type: string
+                description: URL of the product page (optional)
+              urlImg:
+                type: string
+                description: URL of the product image (optional)
+          example:
+            name: "PRODUCT NAME (optional)"
+            description: "PRODUCT DESCRIPTION (optional)"
+            urlInfo: "https://www.info.com/product/123 (optional)"
+            urlImg: "https://www.info.com/product/123.jpg (optional)"
+    responses:
+      '200':
+        description: Product updated successfully
+      '400':
+        description: Bad request 
