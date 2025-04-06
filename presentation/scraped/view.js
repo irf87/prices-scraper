@@ -52,7 +52,7 @@ router.get('/:id?',(req, res) => {
 });
 
 router.delete('/:id',(req, res) => {
-  ctrl.remove(req.params).then((respond) => {
+  ctrl.remove(req.params.id).then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {

@@ -28,7 +28,7 @@ const get = async (id) => {
   return row.all();
 }
 
-const remove = async ({ id }) => {
+const remove = async (id) => {
   const query = `DELETE FROM product_scraped WHERE id=${id}`;
   const removeScraper = dbInstance.execute(query);
   const info = removeScraper.run();

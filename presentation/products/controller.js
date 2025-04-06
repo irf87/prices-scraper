@@ -8,8 +8,8 @@ const get = async (id) => {
   return await product.getProduct(id);
 }
 
-const getScraped = async (isQueryCommand = false) => {
-  return await product.getProductScraped(isQueryCommand);
+const getScraped = async () => {
+  return await product.getProductScraped();
 }
 
 const update = async (id, params) => {

@@ -16,7 +16,7 @@ const get = async (id) => {
   return await scraped.get(id);
 }
 
-const remove = async ({ id }) => {
+const remove = async (id) => {
   return await scraped.remove(id);
 }
 
@@ -29,18 +29,27 @@ const testScraper = async ({ query_selector, url, mode }) => {
   if(!querySelector || !url) {
     return { error: 'missing params' };
   }
-  const { data, error } = await getHtml(url, mode);
-  if (error) {
-    return error;
-  }
-  const $ = cheerio.load(data);
-  const dom = new DomAnalyzer($, data);
-  const resp = new Promise((resolve) => {
-    dom.readText(querySelector, (text) => {
-      resolve({ respond: text});
+  
+  try {
+    const { data, error } = await getHtml(url, mode);
+    if (error) {
+      return { error: error.message || 'Error fetching HTML' };
+    }
+    
+    if (!data) {
+      return { error: 'No data returned from URL' };
+    }
+    const $ = cheerio.load(data);
+    const dom = new DomAnalyzer($, data);
+    
+    return new Promise((resolve) => {
+      dom.readText(querySelector, (text) => {
+        resolve({ respond: text });
+      });
     });
-  });
-  return await resp;
+  } catch (err) {
+    return { error: err.message || 'Unknown error occurred' };
+  }
 }
 
 const suggestSelectors = async ({ url }) => {

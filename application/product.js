@@ -29,7 +29,7 @@ const getProduct = async (id) => {
   return row.all();
 }
 
-const getProductScraped = async (isQueryCommand = false) => {
+const getProductScraped = async () => {
   let query = `
     SELECT 
     product.id,

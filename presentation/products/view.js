@@ -25,8 +25,7 @@ router.get('/',(req, res) => {
 });
 
 router.get('/scraped',(req, res) => {
-  const isQueryCommand = req?.query?.is_query_command === 'true' ?  true : false;
-  ctrl.getScraped(isQueryCommand).then((respond) => {
+  ctrl.getScraped().then((respond) => {
     res.status(200).send(respond);
   })
   .catch((e) => {
