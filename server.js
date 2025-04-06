@@ -3,22 +3,33 @@ const express = require('express'),
 	path = require('path'),
 	app = express();
 
-// require('dotenv').config();
+// Documentation
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+
+// Load environment variables
+require('dotenv').config();
+
+// Replace environment variables in swagger document
+const port = process.env._PORT || 8081;
+swaggerDocument.servers[0].url = swaggerDocument.servers[0].url.replace('${_PORT}', port);
+
 // --------- CARGAR VISTAS --------- //
 const productsUri = require('./presentation/products/view');
 const scraperUri = require('./presentation/scraped/view');
 const scraperNotificationsUri = require('./presentation/notifications/view');
 const reportsUri = require('./presentation/reports/view');
 
-const port = process.env._PORT || 8081;
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-console.log(`ruta ${__dirname}`);
+console.log(`path ${__dirname}`);
 
-/* Rutas */
+/* Paths */
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);

@@ -55,3 +55,15 @@ In there you can add products, rules and the page where the program scrapes
 ### scaper.js
 
 It's the core, you can run at once and set the interval in the env file with the property SCRAPPER_INTERVAL_TIME, if match with you rules it send you a notification in your telegram bot.
+
+## Show documentation
+
+```
+<HOST>/api-docs
+```
+
+For example if the value _PORT of env file is 8080, the url to see the documentation should be:
+
+```
+<HOST>/api-docs
+```
