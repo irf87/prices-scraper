@@ -10,10 +10,12 @@
     ```
     sudo apt install sqlite3
     ```
-4. You need [ravendb](https://ravendb.net/download)
-It soports arm64 for raspberry pi or orange pi
 
-5. You need playwright
+    In some version of macOs is already installed, to check:
+    ```
+    sqlite3 --version
+    ```
+4. You need playwright
 
     ```
     npx playwright install
