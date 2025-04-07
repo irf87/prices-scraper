@@ -5,8 +5,12 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:${_PORT}/api
+  - url: http://localhost:{port}/api
     description: Local development server
+    variables:
+      port:
+        default: "8081"
+        description: The port number for the API server
 
 paths:
   /products:
