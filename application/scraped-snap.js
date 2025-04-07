@@ -1,4 +1,5 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
+const groupRecordsScraped = require('../utils/date/groupRecordsScraped');
 
 const getProductHistory = async (productId) => {
   const query = `SELECT * FROM product_scraped_snap WHERE product_id=${productId}`;
@@ -6,7 +7,7 @@ const getProductHistory = async (productId) => {
   return row.all();
 }
 
-const getProductDetailOfScrapred = async (productScrapedId) => {
+const getProductDetailOfScraped = async (productScrapedId) => {
   let query = `SELECT product.id AS product_id, product.name,
   product_scraped.url_to_scrape, product_scraped.id AS scraped_id
   FROM product_scraped
@@ -60,14 +61,35 @@ const getProductScrapedRecords = async (productScrapedId) => {
   const list = row.all();
 
   const [avg] = await getAvg(productScrapedId);
-  const [product] = await getProductDetailOfScrapred(productScrapedId);
+  const [product] = await getProductDetailOfScraped(productScrapedId);
 
+  // Process the records based on the length of the list
+  let processedRecords = list;
+  if (list.length > 0) {
+    // Group records by day (default)
+    let groupedRecords = groupRecordsScraped.groupRecordsByDay(list);
+    // Apply different grouping based on the number of records
+    if (list.length > 24000) {
+      groupedRecords = groupRecordsScraped.groupRecordsByYear(list);
+    } else if (list.length > 16000) {
+      groupedRecords = groupRecordsScraped.groupRecordsBySemester(list);
+    } else if (list.length > 8000) {
+      groupedRecords = groupRecordsScraped.groupRecordsByQuarter(list);
+    } else if (list.length > 4000) {
+      groupedRecords = groupRecordsScraped.groupRecordsByMonth(list);
+    } else if (list.length > 400) {
+      groupedRecords = groupRecordsScraped.groupRecordsByWeek(list);
+    }
+    
+    processedRecords = groupedRecords;
+  }
   return {
     ...product,
     ...avg,
-    records: list,
+    records: processedRecords,
   };
 }
+
 
 const scrapedSnap = {
   getProductHistory,
