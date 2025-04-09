@@ -46,7 +46,7 @@ It's divided by 2 important files
 
 ### server.js
 
-It's the api run with node/nodemon/pm2:
+It's the api run with node/nodemon/pm2 or just this:
 
 ```
 node server.js
