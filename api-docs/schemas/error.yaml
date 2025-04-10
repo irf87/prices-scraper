@@ -1,0 +1,9 @@
+Error:
+  type: object
+  required:
+    - error
+  properties:
+    error:
+      type: string
+      description: Error message describing what went wrong
+      example: "Category not found" 

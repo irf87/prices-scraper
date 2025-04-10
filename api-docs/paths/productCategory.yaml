@@ -1,0 +1,181 @@
+product_category:
+  get:
+    tags:
+      - Product Categories
+    summary: Get all product-category assignments
+    description: Retrieve a list of all product-category assignments
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/productCategory.yaml#/ProductCategoryAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Internal server error"
+
+product_category_by_product:
+  parameters:
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Product ID
+  get:
+    tags:
+      - Product Categories
+    summary: Get assignments by product
+    description: Retrieve all category assignments for a specific product
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/productCategory.yaml#/ProductCategoryAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Error getting product assignments"
+
+product_category_by_category:
+  parameters:
+    - name: categoryId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Category ID
+  get:
+    tags:
+      - Product Categories
+    summary: Get assignments by category
+    description: Retrieve all product assignments for a specific category
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/productCategory.yaml#/ProductCategoryAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Error getting category assignments"
+
+product_category_assign:
+  post:
+    tags:
+      - Product Categories
+    summary: Assign product to category
+    description: Create a new product-category assignment
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/productCategory.yaml#/ProductCategoryInput'
+    responses:
+      '201':
+        description: Assignment created successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/productCategory.yaml#/ProductCategoryAssignment'
+      '400':
+        description: Invalid input or assignment already exists
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Product ID and Category ID are required"
+
+product_category_delete:
+  parameters:
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Product ID
+    - name: categoryId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Category ID
+  delete:
+    tags:
+      - Product Categories
+    summary: Remove product-category assignment
+    description: Delete an existing product-category assignment
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      '400':
+        description: Assignment not found
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Assignment not found" 

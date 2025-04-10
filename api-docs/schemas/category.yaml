@@ -1,0 +1,33 @@
+Category:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: The unique identifier for the category
+      example: 1
+    name:
+      type: string
+      description: The name of the category
+      example: "Electronics"
+    description:
+      type: string
+      description: The description of the category
+      example: "Electronics category"
+
+CategoryInput:
+  type: object
+  required:
+    - name
+  properties:
+    name:
+      type: string
+      description: The name of the category
+      example: "Electronics" 
+    description:
+      type: string
+      description: The description of the category
+      example: "Electronics category"

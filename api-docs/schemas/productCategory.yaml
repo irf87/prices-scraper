@@ -1,0 +1,46 @@
+ProductCategoryAssignment:
+  type: object
+  required:
+    - product_id
+    - category_id
+  properties:
+    id:
+      type: integer
+      format: int64
+      description: The unique identifier for the assignment
+      example: 1
+    product_id:
+      type: integer
+      format: int64
+      description: The ID of the product
+      example: 1
+    category_id:
+      type: integer
+      format: int64
+      description: The ID of the category
+      example: 1
+    product_name:
+      type: string
+      description: The name of the product
+      example: "iPhone 13"
+    category_name:
+      type: string
+      description: The name of the category
+      example: "Electronics"
+
+ProductCategoryInput:
+  type: object
+  required:
+    - product_id
+    - category_id
+  properties:
+    product_id:
+      type: integer
+      format: int64
+      description: The ID of the product
+      example: 1
+    category_id:
+      type: integer
+      format: int64
+      description: The ID of the category
+      example: 1 

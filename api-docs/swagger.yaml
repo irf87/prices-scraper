@@ -13,12 +13,18 @@ servers:
         description: The port number for the API server
 
 paths:
+
   /products:
     $ref: './paths/products.yaml#/products'
   /products/scraped:
     $ref: './paths/products.yaml#/products_scraped'
   /products/{id}:
     $ref: './paths/products.yaml#/products_id'
+
+  /categories:
+    $ref: './paths/categories.yaml#/categories'
+  /categories/{id}:
+    $ref: './paths/categories.yaml#/categories_id'
 
   /scraper:
     $ref: './paths/scraper.yaml#/scraper'
@@ -36,3 +42,14 @@ paths:
 
   /reports/product-scraped:
     $ref: './paths/reports.yaml#/reports_product_scraped' 
+
+  /product-category:
+    $ref: './paths/productCategory.yaml#/product_category'
+  /product-category/product/{productId}:
+    $ref: './paths/productCategory.yaml#/product_category_by_product'
+  /product-category/category/{categoryId}:
+    $ref: './paths/productCategory.yaml#/product_category_by_category'
+  /product-category/assign:
+    $ref: './paths/productCategory.yaml#/product_category_assign'
+  /product-category/{productId}/{categoryId}:
+    $ref: './paths/productCategory.yaml#/product_category_delete'

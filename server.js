@@ -20,6 +20,8 @@ const productsUri = require('./presentation/products/view');
 const scraperUri = require('./presentation/scraped/view');
 const scraperNotificationsUri = require('./presentation/notifications/view');
 const reportsUri = require('./presentation/reports/view');
+const categoriesUri = require('./presentation/categories/view');
+const productCategoryUri = require('./presentation/productCategory/view');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -47,6 +49,8 @@ app.use('/api/products', productsUri);
 app.use('/api/scraper', scraperUri);
 app.use('/api/notifications', scraperNotificationsUri);
 app.use('/api/reports', reportsUri);
+app.use('/api/categories', categoriesUri);
+app.use('/api/product-category', productCategoryUri);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
