@@ -52,6 +52,8 @@ paths:
     $ref: './paths/scraper.yaml#/scraper_enables'
   /scraper/{id}:
     $ref: './paths/scraper.yaml#/scraper_id'
+  /scraper/suggest-selectors:
+    $ref: './paths/scraper.yaml#/suggest-selectors'
 
   /notifications:
     $ref: './paths/notifications.yaml#/notifications'

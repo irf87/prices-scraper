@@ -319,4 +319,66 @@ scraper_id:
       '200':
         description: Scraper deleted successfully
       '400':
-        description: Bad request 
+        description: Bad request
+
+suggest-selectors:
+  post:
+    summary: Get suggested DOM selectors for a given URL
+    description: Returns the appropriate price and stock DOM selectors based on the provided URL. Currently supports Cyberpuerta, Amazon, and Mercado Libre.
+    tags:
+      - Scraper
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL of the product page to analyze
+            required:
+              - url
+          example:
+            url: "https://www.cyberpuerta.mx/Computo-Hardware/Discos-Duros-SSD-NAS/SSD/SSD-Acer-SA100-120GB-SATA-III-2-5.html"
+    responses:
+      '200':
+        description: Suggested selectors for the given URL
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price_dom_selector:
+                  type: string
+                  description: CSS selector for the price element
+                stock_dom_selector:
+                  type: string
+                  description: CSS selector for the stock element
+              example:
+                price_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.mainPrice > span"
+                stock_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.stock > span > span"
+      '400':
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  description: Error message
+              example:
+                error: "URL is required"
+      '404':
+        description: Site not supported
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  description: Error message
+              example:
+                error: "This site is not supported" 

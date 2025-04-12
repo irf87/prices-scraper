@@ -53,7 +53,35 @@ const testScraper = async ({ query_selector, url, mode }) => {
 }
 
 const suggestSelectors = async ({ url }) => {
-  return null;
+  if (!url) {
+    return { error: 'URL is required' };
+  }
+
+  // Check for Cyberpuerta
+  if (url.includes('cyberpuerta.mx')) {
+    return {
+      price_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.mainPrice > span",
+      stock_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.stock > span > span"
+    };
+  }
+
+  // Check for Amazon
+  if (url.includes('amazon.com')) {
+    return {
+      price_dom_selector: "#corePrice_feature_div > div > div > span.a-price.aok-align-center > span:nth-child(2) > span.a-price-whole",
+      stock_dom_selector: ""
+    };
+  }
+
+  // Check for Mercado Libre
+  if (url.includes('mercadolibre')) {
+    return {
+      price_dom_selector: "#price > div > div.ui-pdp-price__main-container > div.ui-pdp-price__second-line > span:nth-child(1) > span > span.andes-money-amount__fraction",
+      stock_dom_selector: ""
+    };
+  }
+
+  return { error: 'This site is not supported' };
 }
 
 const scrapedCtrl = {
