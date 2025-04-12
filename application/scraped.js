@@ -13,8 +13,12 @@ const create = async (params) => {
   return { success: info.changes >= 1 ? true : false, id: info.lastInsertRowid };
 }
 
-const getEnables = async (params) => {
-  const query = `SELECT * FROM product_scraped WHERE enable=1`;
+const getEnables = async (params = {}) => {
+  let query = `SELECT * FROM product_scraped WHERE enable=1`;
+  if(params.gettingMode) {
+    query += ` AND getting_mode = '${params.gettingMode}'`;
+  }
+  console.log(`query: ${query}`);
   const row = dbInstance.execute(query);
   return row.all();
 }
