@@ -30,6 +30,34 @@ All notable changes to this project will be documented in this file. See [standa
 * fix sync function ([6f57489](https://github.com/irf87/prices-scraper/commit/6f57489d56b9b9473b694b8bc7abe2a2a2b74b7c))
 * report product scraped, return array insted of object ([d6322aa](https://github.com/irf87/prices-scraper/commit/d6322aa2683883f3b2d6d51c6297f8311d0af916))
 
+## [1.5.0](https://github.com/irf87/prices-scraper/compare/v1.2.0...v1.5.0) (2025-04-12)
+
+
+### Features
+
+* add api documentation ([e7acd0c](https://github.com/irf87/prices-scraper/commit/e7acd0c2b97d83a54f0a80245dd604f9dbca5a12))
+* add manual sync ([f2432fb](https://github.com/irf87/prices-scraper/commit/f2432fbec084a5f524361b33e33666b905ac3ed8))
+* add render mode to scrape sites like aliexpress ([08bb0bb](https://github.com/irf87/prices-scraper/commit/08bb0bb67c924d4e003da7c24097b8886621dc28))
+* add support to threads into scraper file to improve performance ([60ad5d6](https://github.com/irf87/prices-scraper/commit/60ad5d6ca0dc8e52545a973825f1e76b5d6d1bcd))
+* add support to threads into scraper file to improve performance ([78b8ea7](https://github.com/irf87/prices-scraper/commit/78b8ea715e505a72d55b290505c9107ce0db1ab6))
+* auto sync and delete collections when reset sync ([1485f1e](https://github.com/irf87/prices-scraper/commit/1485f1ed2f7dbb6c4ab98b5aa188b1a508030713))
+* create api to suggest commons selectors from some online pages ([40e0939](https://github.com/irf87/prices-scraper/commit/40e093992159d124d7718c41e3144e09637ef6c3))
+* create CRUD category ([567e902](https://github.com/irf87/prices-scraper/commit/567e902168716f3148a002c9b14e28e2ac9a4f1f))
+* create CRUD for list ([27d4a04](https://github.com/irf87/prices-scraper/commit/27d4a04027fc19af2f3b291d23919a3fd1442c53))
+* deprecate mongodb and integrate ravendb ([4f46acd](https://github.com/irf87/prices-scraper/commit/4f46acd2d4677400e01c3d4ce6bf8b3aec8ec92a))
+* deprecate raven in some apis and fix send notifications ([d521341](https://github.com/irf87/prices-scraper/commit/d521341bae945c6ec2952180dfc9a17d29e1bfb6))
+* deprecate ravendb ([8244367](https://github.com/irf87/prices-scraper/commit/82443674f6ef6d23729194aad0f535871530b73c))
+* group long records scraped to avoid large list length ([3c80325](https://github.com/irf87/prices-scraper/commit/3c80325128af7f7d8ed9b421b319e111ede93bfe))
+* improvements in how to get data from dinamic pages, with mode RENDER ([09cf4ae](https://github.com/irf87/prices-scraper/commit/09cf4ae7f86092f4a14adec776a9ff7b5a967115))
+* prepare database for add categories and products list ([b6c00d5](https://github.com/irf87/prices-scraper/commit/b6c00d5b8244e8a5ba5e24c9f59e4d52794cef23))
+
+
+### Bug Fixes
+
+* add try catch when axios crash ([04dfbb8](https://github.com/irf87/prices-scraper/commit/04dfbb86b2ca5de3cdf2737157f5fa36f1f935ae))
+* fix sync function ([6f57489](https://github.com/irf87/prices-scraper/commit/6f57489d56b9b9473b694b8bc7abe2a2a2b74b7c))
+* report product scraped, return array insted of object ([d6322aa](https://github.com/irf87/prices-scraper/commit/d6322aa2683883f3b2d6d51c6297f8311d0af916))
+
 ## [1.4.0](https://github.com/irf87/prices-scraper/compare/v1.2.0...v1.4.0) (2024-08-19)
 
 
