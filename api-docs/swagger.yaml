@@ -26,6 +26,24 @@ paths:
   /categories/{id}:
     $ref: './paths/categories.yaml#/categories_id'
 
+  /lists:
+    $ref: './paths/lists.yaml#/lists'
+  /lists/{id}:
+    $ref: './paths/lists.yaml#/lists_id'
+  /lists/create:
+    $ref: './paths/lists.yaml#/lists_create'
+
+  /product-list:
+    $ref: './paths/productList.yaml#/product_list'
+  /product-list/product/{productId}:
+    $ref: './paths/productList.yaml#/product_list_by_product'
+  /product-list/list/{listId}:
+    $ref: './paths/productList.yaml#/product_list_by_list'
+  /product-list/assign:
+    $ref: './paths/productList.yaml#/product_list_assign'
+  /product-list/{productId}/{listId}:
+    $ref: './paths/productList.yaml#/product_list_delete'
+
   /scraper:
     $ref: './paths/scraper.yaml#/scraper'
   /scraper/test:

@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const controller = require('./controller');
 
+const parseParams = require('../../middleware/parseParams');
+
+router.use(parseParams);
 /**
  * @route GET /api/categories
  * @desc Get all categories
@@ -10,9 +13,9 @@ const controller = require('./controller');
 router.get('/', async (req, res) => {
     try {
         const categories = await controller.getCategories();
-        res.json(categories);
+        res.status(200).send(categories);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).send({ error: error.message });
     }
 });
 
@@ -24,9 +27,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const category = await controller.getCategory(req.params.id);
-        res.json(category);
+        res.status(200).send(category);
     } catch (error) {
-        res.status(404).json({ error: error.message });
+        res.status(404).send({ error: error.message });
     }
 });
 
@@ -38,9 +41,9 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const category = await controller.createCategory(req.body);
-        res.status(201).json(category);
+        res.status(201).send(category);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).send({ error: error.message });
     }
 });
 

@@ -1,0 +1,28 @@
+List:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: The list ID
+    name:
+      type: string
+      description: The name of the list
+    description:
+      type: string
+      description: The description of the list
+    url_img_cover:
+      type: string
+      description: The URL of the cover image
+    created_at:
+      type: string
+      format: date-time
+      description: The creation timestamp
+    updated_at:
+      type: string
+      format: date-time
+      description: The last update timestamp
+  required:
+    - id
+    - name
+    - created_at
+    - updated_at 

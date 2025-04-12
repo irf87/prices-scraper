@@ -3,12 +3,11 @@ const router = express.Router();
 const controller = require('./controller');
 
 const parseParams = require('../../middleware/parseParams');
-
 router.use(parseParams);
 
 /**
- * @route GET /api/product-category
- * @desc Get all product-category assignments
+ * @route GET /api/product-list
+ * @desc Get all product-list assignments
  * @access Public
  */
 router.get('/', async (req, res) => {
@@ -21,7 +20,7 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * @route GET /api/product-category/product/:productId
+ * @route GET /api/product-list/product/:productId
  * @desc Get assignments by product ID
  * @access Public
  */
@@ -35,13 +34,13 @@ router.get('/product/:productId', async (req, res) => {
 });
 
 /**
- * @route GET /api/product-category/category/:categoryId
- * @desc Get assignments by category ID
+ * @route GET /api/product-list/list/:listId
+ * @desc Get assignments by list ID
  * @access Public
  */
-router.get('/category/:categoryId', async (req, res) => {
+router.get('/list/:listId', async (req, res) => {
     try {
-        const assignments = await controller.getAssignmentsByCategory(req.params.categoryId);
+        const assignments = await controller.getAssignmentsByList(req.params.listId);
         res.status(200).send(assignments);
     } catch (error) {
         res.status(500).send({ error: error.message });
@@ -49,30 +48,30 @@ router.get('/category/:categoryId', async (req, res) => {
 });
 
 /**
- * @route POST /api/product-category/assign
- * @desc Assign a product to a category
+ * @route POST /api/product-list/assign
+ * @desc Assign a product to a list
  * @access Public
  */
 router.post('/assign', async (req, res) => {
     try {
         const assignment = await controller.assignProduct(req.body);
-        res.status(201).json(assignment);
+        res.status(200).send(assignment);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).send({ error: error.message });
     }
 });
 
 /**
- * @route DELETE /api/product-category/:productId/:categoryId
- * @desc Remove a product-category assignment
+ * @route DELETE /api/product-list/:productId/:listId
+ * @desc Remove a product from a list
  * @access Public
  */
-router.delete('/:productId/:categoryId', async (req, res) => {
+router.delete('/:productId/:listId', async (req, res) => {
     try {
-        const result = await controller.removeAssignment(req.params.productId, req.params.categoryId);
-        res.json(result);
+        const result = await controller.removeProduct(req.params.productId, req.params.listId);
+        res.send(result);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).send({ error: error.message });
     }
 });
 

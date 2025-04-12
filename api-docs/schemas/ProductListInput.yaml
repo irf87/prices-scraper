@@ -1,0 +1,12 @@
+ProductListInput:
+  type: object
+  properties:
+    product_id:
+      type: integer
+      description: The product ID
+    list_id:
+      type: integer
+      description: The list ID
+  required:
+    - product_id
+    - list_id 

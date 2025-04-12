@@ -1,0 +1,14 @@
+ListInput:
+  type: object
+  properties:
+    name:
+      type: string
+      description: The name of the list
+    description:
+      type: string
+      description: The description of the list
+    url_img_cover:
+      type: string
+      description: The URL of the cover image
+  required:
+    - name 

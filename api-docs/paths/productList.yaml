@@ -1,0 +1,147 @@
+product_list:
+  get:
+    tags:
+      - Product List
+    summary: Get all product-list assignments
+    description: Retrieve all product-list assignments
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/ProductListAssignment.yaml#/ProductListAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error'
+
+product_list_by_product:
+  get:
+    tags:
+      - Product List
+    summary: Get assignments by product ID
+    description: Retrieve all lists for a specific product
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Product ID
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/ProductListAssignment.yaml#/ProductListAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error'
+
+product_list_by_list:
+  get:
+    tags:
+      - Product List
+    summary: Get assignments by list ID
+    description: Retrieve all products in a specific list
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: List ID
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/ProductListAssignment.yaml#/ProductListAssignment'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error'
+
+product_list_assign:
+  post:
+    tags:
+      - Product List
+    summary: Assign a product to a list
+    description: Create a new product-list assignment
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ProductListInput.yaml#/ProductListInput'
+    responses:
+      '201':
+        description: Assignment created successfully
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/ProductListAssignment.yaml#/ProductListAssignment'
+      '400':
+        description: Invalid input
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error'
+
+product_list_delete:
+  delete:
+    tags:
+      - Product List
+    summary: Remove a product from a list
+    description: Delete a product-list assignment
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Product ID
+      - name: listId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: List ID
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+      '400':
+        description: Invalid input
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error'
+      '404':
+        description: Assignment not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/Error.yaml#/Error' 
