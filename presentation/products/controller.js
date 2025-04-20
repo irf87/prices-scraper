@@ -12,6 +12,10 @@ const getScraped = async () => {
   return await product.getProductScraped();
 }
 
+const getScrapedById = async (productId) => {
+  return await product.getProductScrapedById(productId);
+}
+
 const update = async (id, params) => {
   return await product.updateProduct(id, params);
 }
@@ -20,6 +24,7 @@ const products = {
   create,
   get,
   getScraped,
+  getScrapedById,
   update,
 };
 

@@ -1,0 +1,44 @@
+ScrapedProduct:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: The product ID
+    product_scraped_id:
+      type: integer
+      description: The product scraped ID
+    name:
+      type: string
+      description: The name of the product
+    description:
+      type: string
+      description: The description of the product
+    url_info:
+      type: string
+      description: The URL for product information
+    url_img:
+      type: string
+      description: The URL for product image
+    url_to_scrape:
+      type: string
+      description: The URL to scrape for product data
+    price:
+      type: number
+      description: The current price of the product
+    date:
+      type: string
+      format: date-time
+      description: The date of the last price update
+    list_id:
+      type: integer
+      description: The list ID (for list-based queries)
+    category_id:
+      type: integer
+      description: The category ID (for category-based queries)
+  required:
+    - id
+    - product_scraped_id
+    - name
+    - url_to_scrape
+    - price
+    - date 

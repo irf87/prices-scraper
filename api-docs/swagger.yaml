@@ -5,9 +5,12 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:{port}/api
+  - url: http://{host}:{port}/api
     description: Local development server
     variables:
+      host:
+        default: "localhost"
+        description: The host where the API server is running
       port:
         default: "8081"
         description: The port number for the API server
@@ -18,6 +21,8 @@ paths:
     $ref: './paths/products.yaml#/products'
   /products/scraped:
     $ref: './paths/products.yaml#/products_scraped'
+  /products/scraped-product/{productId}:
+    $ref: './paths/products.yaml#/products_scraped_product'
   /products/{id}:
     $ref: './paths/products.yaml#/products_id'
 
@@ -43,6 +48,8 @@ paths:
     $ref: './paths/productList.yaml#/product_list_assign'
   /product-list/{productId}/{listId}:
     $ref: './paths/productList.yaml#/product_list_delete'
+  /product-list/scraped-product/{listId}:
+    $ref: './paths/productList.yaml#/product_list_scraped_by_list'
 
   /scraper:
     $ref: './paths/scraper.yaml#/scraper'
@@ -73,3 +80,5 @@ paths:
     $ref: './paths/productCategory.yaml#/product_category_assign'
   /product-category/{productId}/{categoryId}:
     $ref: './paths/productCategory.yaml#/product_category_delete'
+  /product-category/scraped-product/{categoryId}:
+    $ref: './paths/productCategory.yaml#/product_category_scraped_by_category'

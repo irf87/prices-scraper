@@ -84,6 +84,51 @@ products_scraped:
       '400':
         description: Bad request
 
+products_scraped_product:
+  get:
+    summary: Get scraped product by product ID
+    tags:
+      - Products
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+        description: Product ID
+    responses:
+      '200':
+        description: Scraped product details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Product ID
+                name:
+                  type: string
+                  description: Product name
+                description:
+                  type: string
+                  description: Product description
+                url_info:
+                  type: string
+                  description: Product URL
+                url_img:
+                  type: string
+                  description: Product image URL
+                price:
+                  type: number
+                  description: Current product price
+                last_update:
+                  type: string
+                  format: date-time
+                  description: Last price update timestamp
+      '400':
+        description: Bad request
+
 products_id:
   put:
     summary: Update a product

@@ -75,4 +75,32 @@ router.delete('/:productId/:listId', async (req, res) => {
     }
 });
 
+/**
+ * @route GET /api/product-list/scraped-product/:listId
+ * @desc Get scraped products by list ID
+ * @access Public
+ */
+router.get('/scraped-product/:listId', async (req, res) => {
+    try {
+        const products = await controller.getScrapedProductsByList(req.params.listId);
+        res.status(200).send(products);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+/**
+ * @route GET /api/product-list/scraped-product/:categoryId
+ * @desc Get scraped products by category ID
+ * @access Public
+ */
+router.get('/scraped-product/:categoryId', async (req, res) => {
+    try {
+        const products = await controller.getScrapedProductsByCategory(req.params.categoryId);
+        res.status(200).send(products);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 module.exports = router; 

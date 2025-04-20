@@ -77,6 +77,19 @@ class ProductCategoryController {
             throw new Error('Error removing assignment: ' + error.message);
         }
     }
+
+    /**
+     * Get scraped products by category ID
+     * @param {number} categoryId - Category ID
+     * @returns {Promise<Array>} Array of scraped products in the category
+     */
+    async getScrapedProductsByCategory(categoryId) {
+        try {
+            return await productCategory.getScrapedProductsByCategoryId(categoryId);
+        } catch (error) {
+            throw new Error('Error getting scraped products by category: ' + error.message);
+        }
+    }
 }
 
 module.exports = new ProductCategoryController(); 

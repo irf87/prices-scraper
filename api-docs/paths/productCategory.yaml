@@ -178,4 +178,40 @@ product_category_delete:
                 error:
                   type: string
                   description: Error message describing what went wrong
-                  example: "Assignment not found" 
+                  example: "Assignment not found"
+
+product_category_scraped_by_category:
+  get:
+    tags:
+      - Product Categories
+    summary: Get scraped products by category ID
+    description: Retrieve all scraped products in a specific category
+    parameters:
+      - name: categoryId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Category ID
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/ScrapedProduct.yaml#/ScrapedProduct'
+      '500':
+        description: Server error
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - error
+              properties:
+                error:
+                  type: string
+                  description: Error message describing what went wrong
+                  example: "Error getting scraped products by category" 

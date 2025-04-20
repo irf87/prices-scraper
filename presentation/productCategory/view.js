@@ -76,4 +76,18 @@ router.delete('/:productId/:categoryId', async (req, res) => {
     }
 });
 
+/**
+ * @route GET /api/product-category/scraped-product/:categoryId
+ * @desc Get scraped products by category ID
+ * @access Public
+ */
+router.get('/scraped-product/:categoryId', async (req, res) => {
+    try {
+        const products = await controller.getScrapedProductsByCategory(req.params.categoryId);
+        res.status(200).send(products);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 module.exports = router; 

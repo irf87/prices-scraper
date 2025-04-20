@@ -88,6 +88,38 @@ class ProductList {
         const result = stmt.run(productId, listId);
         return result.changes > 0;
     }
+
+    /**
+     * Get scraped products by list ID
+     * @param {number} listId - The list ID
+     * @returns {Array} Array of scraped products in the list
+     */
+    getScrapedProductsByListId(listId) {
+        const stmt = dbInstance.execute(`
+            SELECT 
+                product.id,
+                product_scraped.id as product_scraped_id,
+                product.name, 
+                product.description,
+                product.url_info, 
+                product.url_img, 
+                product_scraped.url_to_scrape, 
+                last_snap.price, 
+                last_snap.date,
+                pl.list_id
+            FROM product_scraped
+            JOIN product ON product_scraped.product_id = product.id
+            JOIN product_list pl ON product.id = pl.product_id
+            JOIN (
+                SELECT product_scraped_id, price, MAX(date) AS last_timestamp
+                FROM product_scraped_snap
+                GROUP BY product_scraped_id
+            ) AS latest_snap ON product_scraped.id = latest_snap.product_scraped_id
+            JOIN product_scraped_snap AS last_snap ON latest_snap.product_scraped_id = last_snap.product_scraped_id AND latest_snap.last_timestamp = last_snap.date
+            WHERE pl.list_id = ${listId}
+        `);
+        return stmt.all();
+    }
 }
 
 module.exports = new ProductList(); 

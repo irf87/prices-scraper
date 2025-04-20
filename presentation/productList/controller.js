@@ -77,6 +77,19 @@ class ProductListController {
             throw new Error('Error removing product: ' + error.message);
         }
     }
+
+    /**
+     * Get scraped products by list ID
+     * @param {number} listId - List ID
+     * @returns {Promise<Array>} Array of scraped products in the list
+     */
+    async getScrapedProductsByList(listId) {
+        try {
+            return await productList.getScrapedProductsByListId(listId);
+        } catch (error) {
+            throw new Error('Error getting scraped products by list: ' + error.message);
+        }
+    }
 }
 
 module.exports = new ProductListController(); 

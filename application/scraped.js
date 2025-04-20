@@ -18,7 +18,6 @@ const getEnables = async (params = {}) => {
   if(params.gettingMode) {
     query += ` AND getting_mode = '${params.gettingMode}'`;
   }
-  console.log(`query: ${query}`);
   const row = dbInstance.execute(query);
   return row.all();
 }
