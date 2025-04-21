@@ -66,6 +66,8 @@ paths:
     $ref: './paths/notifications.yaml#/notifications'
   /notifications/{id}:
     $ref: './paths/notifications.yaml#/notifications_id'
+  /notifications/product-scraped/{id}:
+    $ref: './paths/notifications.yaml#/notifications_product_scraped'
 
   /reports/product-scraped:
     $ref: './paths/reports.yaml#/reports_product_scraped' 

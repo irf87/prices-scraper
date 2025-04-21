@@ -119,4 +119,54 @@ notifications_id:
       '200':
         description: Notification updated successfully
       '400':
+        description: Bad request
+
+notifications_product_scraped:
+  get:
+    summary: Get notification by product scraped ID
+    tags:
+      - Notifications
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Product scraped ID
+    responses:
+      '200':
+        description: Notification object for the specified product scraped ID
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Notification ID
+                product_scraped_id:
+                  type: integer
+                  description: ID of the scraped product
+                match:
+                  type: string
+                  description: Text to match in the product
+                notify_when_is_available:
+                  type: boolean
+                  description: Whether to notify when product becomes available
+                notify_price_smaller_equal_than:
+                  type: number
+                  description: Notify when price is less than or equal to this value
+                notify_price_more_equal_than:
+                  type: number
+                  description: Notify when price is more than or equal to this value
+                notify_stock_changes:
+                  type: boolean
+                  description: Whether to notify on stock changes
+                notify_price_changes:
+                  type: boolean
+                  description: Whether to notify on price changes
+                notify_availability_changes:
+                  type: boolean
+                  description: Whether to notify on availability changes
+      '400':
         description: Bad request 

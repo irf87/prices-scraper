@@ -30,8 +30,8 @@ const executeScraping = async (scraper, cont, arrayLength, toScraping) => {
   try {
     cont ++;
     const [product] = await productCtrl.get(scraper.product_id);
-    const [rules] = await scraperNotifications.get(scraper.id);
-    if (typeof rules === 'object' && rules?.length > 0) {
+    const rules = await scraperNotifications.getProductScraped(scraper.id);
+    if (rules?.length > 0) {
       await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
       return;
     }

@@ -41,6 +41,14 @@ product_category_by_product:
       - Product Categories
     summary: Get assignments by product
     description: Retrieve all category assignments for a specific product
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the product to get assignments for
     responses:
       '200':
         description: Successful operation
@@ -78,6 +86,14 @@ product_category_by_category:
       - Product Categories
     summary: Get assignments by category
     description: Retrieve all product assignments for a specific category
+    parameters:
+      - name: categoryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: ID of the category to get assignments for
     responses:
       '200':
         description: Successful operation
@@ -192,7 +208,8 @@ product_category_scraped_by_category:
         required: true
         schema:
           type: integer
-        description: Category ID
+          format: int64
+        description: ID of the category to get scraped products for
     responses:
       '200':
         description: Successful operation

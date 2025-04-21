@@ -36,7 +36,8 @@ const getProductScraped = async () => {
     product_scraped.id as product_scraped_id,
     product.name, product.description,
     product.url_info, product.url_img, 
-    product_scraped.url_to_scrape, last_snap.price, last_snap.date
+    product_scraped.url_to_scrape, last_snap.price, last_snap.date,
+    CASE WHEN product_scraped.enable = 1 THEN true ELSE false END as enable
     FROM product_scraped
     JOIN product ON product_scraped.product_id = product.id
     JOIN (
@@ -47,7 +48,11 @@ const getProductScraped = async () => {
     JOIN product_scraped_snap AS last_snap ON latest_snap.product_scraped_id = last_snap.product_scraped_id AND latest_snap.last_timestamp = last_snap.date
     WHERE product_scraped.enable = 1`;
     const row = dbInstance.execute(query);
-    return row.all();
+    const results = row.all();
+    return results.map(item => ({
+        ...item,
+        enable: Boolean(item.enable)
+    }));
 }
 
 const getProductScrapedById = async (productId) => {

@@ -106,7 +106,8 @@ class ProductCategory {
                 product_scraped.url_to_scrape, 
                 last_snap.price, 
                 last_snap.date,
-                pc.category_id
+                pc.category_id,
+                CASE WHEN product_scraped.enable = 1 THEN true ELSE false END as enable
             FROM product_scraped
             JOIN product ON product_scraped.product_id = product.id
             JOIN product_category pc ON product.id = pc.product_id
@@ -118,7 +119,11 @@ class ProductCategory {
             JOIN product_scraped_snap AS last_snap ON latest_snap.product_scraped_id = last_snap.product_scraped_id AND latest_snap.last_timestamp = last_snap.date
             WHERE pc.category_id = ${categoryId}
         `);
-        return stmt.all();
+        const results = stmt.all();
+        return results.map(item => ({
+            ...item,
+            enable: Boolean(item.enable)
+        }));
     }
 }
 
