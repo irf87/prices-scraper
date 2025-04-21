@@ -10,7 +10,6 @@ const notificationTransformer = (param = {}) => {
     notify_stock_changes: booleanToNumber(param.notify_stock_changes),
     notify_price_changes: booleanToNumber(param.notify_price_changes),
     notify_availability_changes: booleanToNumber(param.notify_availability_changes),
-    ...param,
   }
 }
 
