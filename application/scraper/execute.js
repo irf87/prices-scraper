@@ -31,7 +31,11 @@ const executeScraping = async (scraper, cont, arrayLength, toScraping) => {
     cont ++;
     const [product] = await productCtrl.get(scraper.product_id);
     const rules = await scraperNotifications.getProductScraped(scraper.id);
-    if (rules?.length > 0) {
+    if (!rules || typeof rules !== 'object') {
+      if (isDebug) {
+        console.log(`fail:${scraper.url_to_scrape} with id ${scraper.id}`);
+        console.log('A rule have not found');
+      }
       await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
       return;
     }
