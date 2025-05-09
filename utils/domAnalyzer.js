@@ -57,7 +57,13 @@ class DomAnalyzer {
     try{
       this.$(domSelector, this.html).each((i, element) => {
         clearTimeout(timer);
-        callBack(context.$(element).text());
+        const $element = context.$(element);
+        // Check if element is a meta tag with content attribute
+        if ($element.is('meta') && $element.attr('content')) {
+          callBack($element.attr('content'));
+        } else {
+          callBack($element.text());
+        }
       });
     } catch(err) {
       clearTimeout(timer);
@@ -65,6 +71,36 @@ class DomAnalyzer {
         console.log(`fail:readText: ${err}`);
         callBack('');
       }
+    }
+  }
+
+  getImageUrl(domSelector, resolve = () => {}) {
+    const timer = setTimeout(() => {
+      this.isDisabled = true;
+      if (isDebug) {
+        console.log(`fail:getImageUrl:timeout ${DEFAULT_TIMEOUT}`);
+      }
+      resolve('');
+    }, DEFAULT_TIMEOUT);
+
+    try {
+      const element = this.$(domSelector, this.html).first();
+      let imageUrl = '';
+      
+      if (element.is('img')) {
+        imageUrl = element.attr('src') || element.attr('data-src') || '';
+      } else if (element.is('meta[property="og:image"]') || element.is('meta[name="twitter:image"]')) {
+        imageUrl = element.attr('content') || '';
+      }
+      
+      clearTimeout(timer);
+      resolve(imageUrl);
+    } catch(err) {
+      clearTimeout(timer);
+      if (isDebug) {
+        console.log(`fail:getImageUrl: ${err}`);
+      }
+      resolve('');
     }
   }
 }

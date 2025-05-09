@@ -74,7 +74,14 @@ const executeScraping = async (scraper, cont, arrayLength, toScraping) => {
     if (dom.isDisabled) {
       scraperCtrl.update(scraper.id, { enable: 0});
       const disabledMsg = t('DISABLE_SCRAPER_PRODUCT', {id: scraper.id, name: product.name });
-      telegram.send(disabledMsg);
+      if (isDebug) {
+        console.log('========= disabledMsg =========');
+        console.log(disabledMsg);
+        console.log('========= disabledMsg =========\n');
+      }
+      if(process.env.ENABLE_NOTIFICATIONS === 'true') {
+        telegram.send(disabledMsg);
+      }
       await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
       return;
     }

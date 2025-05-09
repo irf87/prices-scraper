@@ -1,23 +1,17 @@
 const dbInstance = require('../infrastructure/storage/sqliteController');
 
 const createProduct = async (params) =>  {
-  const {
-    name,
-    description,
-    url_info,
-    url_img,
-  } = params;
 
   const newProduct = dbInstance.prepareInsert('product', params);
-  const info = newProduct.run(name, description, url_info, url_img);
+  const info = newProduct.run(...Object.values(params));
 
-  return { success: info.changes >= 1 ? true : false, id: info.lastInsertRowid };
+  return { success: info.changes >= 1 ? true : false, id: info.lastInsertRowid, ...params };
 }
 
 const updateProduct = async (id, params) => {
   const updateProduct = dbInstance.prepareUpdate('product', params, `id=${id}`);
   const info = updateProduct.run();
-  return { success: info.changes >= 1 ? true : false };
+  return { success: info.changes >= 1 ? true : false ,...params };
 }
 
 const getProduct = async (id) => {

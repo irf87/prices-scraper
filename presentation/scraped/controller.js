@@ -1,8 +1,7 @@
-const cheerio = require('cheerio');
-const getHtml = require('../../application/get-html-by-url');
-
-const DomAnalyzer = require('../../utils/domAnalyzer');
 const scraped = require('../../application/scraped');
+const htmlSelectors = require('../../utils/htmlSelectors');
+const testingScraper = require('../../application/scraper/test-scraper');
+const getProductDetailsByScraper = require('../../application/scraper/get-product-details-by-scraper');
 
 const create = async (params) => {
   return await scraped.create(params);
@@ -29,27 +28,11 @@ const testScraper = async ({ query_selector, url, mode }) => {
   if(!querySelector || !url) {
     return { error: 'missing params' };
   }
-  
-  try {
-    const { data, error } = await getHtml(url, mode);
-    if (error) {
-      return { error: error.message || 'Error fetching HTML' };
-    }
-    
-    if (!data) {
-      return { error: 'No data returned from URL' };
-    }
-    const $ = cheerio.load(data);
-    const dom = new DomAnalyzer($, data);
-    
-    return new Promise((resolve) => {
-      dom.readText(querySelector, (text) => {
-        resolve({ respond: text });
-      });
-    });
-  } catch (err) {
-    return { error: err.message || 'Unknown error occurred' };
-  }
+  return await testingScraper({
+    querySelector,
+    url,
+    mode,
+  });
 }
 
 const suggestSelectors = async ({ url }) => {
@@ -57,31 +40,36 @@ const suggestSelectors = async ({ url }) => {
     return { error: 'URL is required' };
   }
 
-  // Check for Cyberpuerta
-  if (url.includes('cyberpuerta.mx')) {
-    return {
-      price_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.mainPrice > span",
-      stock_dom_selector: "#productinfo > form > div.detailsInfo.clear > div:nth-child(1) > div:nth-child(2) > div > div:nth-child(4) > div.medium-7.cell.cp-pr > div > div > div.stock > span > span"
-    };
+  const site = htmlSelectors.getSiteFromUrl(url);
+
+  if (!site) return {error: 'This site is not supported'};
+  
+  const siteSelectors = htmlSelectors.SITE_SELECTORS[site];
+
+  if(!siteSelectors) {
+    return {error: 'Selectors not found for this site'};
   }
 
-  // Check for Amazon
-  if (url.includes('amazon.com')) {
-    return {
-      price_dom_selector: "#corePrice_feature_div > div > div > span.a-price.aok-align-center > span:nth-child(2) > span.a-price-whole",
-      stock_dom_selector: ""
-    };
-  }
+  return siteSelectors;  
+}
 
-  // Check for Mercado Libre
-  if (url.includes('mercadolibre')) {
-    return {
-      price_dom_selector: "#price > div > div.ui-pdp-price__main-container > div.ui-pdp-price__second-line > span:nth-child(1) > span > span.andes-money-amount__fraction",
-      stock_dom_selector: ""
-    };
+const getProductDetail = async ({
+  url,
+  getting_mode,
+  product_name_dom_selector,
+  product_description_dom_selector,
+  image_product_dom_selector
+}) => {
+  if(!url || !product_name_dom_selector) {
+    return { error: 'missing params' };
   }
-
-  return { error: 'This site is not supported' };
+  return await getProductDetailsByScraper({
+    url,
+    productNameDomSelector: product_name_dom_selector,
+    productDescriptionDomSelector: product_description_dom_selector,
+    mode: getting_mode,
+    imageProductDomSelector: image_product_dom_selector
+  });
 }
 
 const scrapedCtrl = {
@@ -92,6 +80,7 @@ const scrapedCtrl = {
   update,
   testScraper,
   suggestSelectors,
+  getProductDetail,
 };
 
 module.exports = scrapedCtrl;

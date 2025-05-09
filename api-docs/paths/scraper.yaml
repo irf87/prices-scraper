@@ -381,4 +381,73 @@ suggest-selectors:
                   type: string
                   description: Error message
               example:
-                error: "This site is not supported" 
+                error: "This site is not supported"
+
+product-details-by-selectors:
+  post:
+    summary: Get product details using provided selectors
+    description: Retrieves product details (price, stock, availability) from a given URL using the provided CSS selectors
+    tags:
+      - Scraper
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL of the product page to scrape
+              price_dom_selector:
+                type: string
+                description: CSS selector for the price element
+              stock_dom_selector:
+                type: string
+                description: CSS selector for the stock element (optional)
+              available_dom_selector:
+                type: string
+                description: CSS selector for the availability element
+              mode:
+                type: string
+                description: Mode to get HTML (FETCH or RENDER), use RENDER for dynamic pages
+                enum: [FETCH, RENDER]
+            required:
+              - url
+              - price_dom_selector
+              - available_dom_selector
+          example:
+            url: "https://www.amazon.com.mx/Apple-iPhone-Pro-MAX-256/dp/B0DGJFC6XS"
+            price_dom_selector: "#corePrice_feature_div > div > div > span.a-price.aok-align-center > span:nth-child(2) > span.a-price-whole"
+            stock_dom_selector: ""
+            available_dom_selector: "#availability > span"
+            mode: "RENDER"
+    responses:
+      '200':
+        description: Product details retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price:
+                  type: string
+                  description: The price of the product
+                stock:
+                  type: string
+                  description: The stock status of the product
+                available:
+                  type: string
+                  description: The availability status of the product
+      '400':
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  description: Error message
+              example:
+                error: "Required parameters are missing" 

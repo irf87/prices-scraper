@@ -61,13 +61,22 @@ paths:
     $ref: './paths/scraper.yaml#/scraper_id'
   /scraper/suggest-selectors:
     $ref: './paths/scraper.yaml#/suggest-selectors'
+  /scraper/product-details-by-selectors:
+    $ref: './paths/scraper.yaml#/product-details-by-selectors'
 
   /notifications:
-    $ref: './paths/notifications.yaml#/notifications'
+    get:
+      $ref: './paths/notifications.yaml#/notifications/get'
+    post:
+      $ref: './paths/notifications.yaml#/notifications/post'
   /notifications/{id}:
-    $ref: './paths/notifications.yaml#/notifications_id'
+    get:
+      $ref: './paths/notifications.yaml#/notifications_id/get'
+    put:
+      $ref: './paths/notifications.yaml#/notifications_id/put'
   /notifications/product-scraped/{id}:
-    $ref: './paths/notifications.yaml#/notifications_product_scraped'
+    get:
+      $ref: './paths/notifications.yaml#/notifications_product_scraped/get'
 
   /reports/product-scraped:
     $ref: './paths/reports.yaml#/reports_product_scraped' 
