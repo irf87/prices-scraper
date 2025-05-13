@@ -14,14 +14,29 @@ const getHtmlByRender = async (url) => {
     browser = await chromium.launch({
       headless: true,
       args: [
-        '--disable-blink-features=AutomationControlled',
+       '--disable-blink-features=AutomationControlled',
         '--disable-features=IsolateOrigins,site-per-process',
         '--disable-site-isolation-trials',
         '--disable-web-security',
         '--disable-features=IsolateOrigins',
         '--disable-features=BlockInsecurePrivateNetworkRequests',
         '--disable-features=CrossSiteDocumentBlockingAlways',
-        '--disable-features=CrossSiteDocumentBlockingIfIsolating'
+        '--disable-features=CrossSiteDocumentBlockingIfIsolating',
+        '--disable-blink-features',
+        '--disable-blink-features=AutomationControlled',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-infobars',
+        '--window-position=0,0',
+        '--ignore-certificate-errors',
+        '--ignore-certificate-errors-spki-list',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu',
+        '--lang=es-MX',
+        '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'
       ]
     });
     
@@ -45,7 +60,10 @@ const getHtmlByRender = async (url) => {
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-Site': 'none',
         'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1'
+        'Upgrade-Insecure-Requests': '1',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'DNT': '1'
       }
     });
     
@@ -73,7 +91,11 @@ const getHtmlByRender = async (url) => {
       waitUntil: 'networkidle',
       timeout: 60000 // Increase timeout to 60 seconds
     });
-    
+
+    // Simulate human-like behavior
+    await page.mouse.move(Math.random() * 500, Math.random() * 500);
+    await page.waitForTimeout(1000 + Math.random() * 1000);
+
     // Wait for the page to be fully loaded
     await page.waitForLoadState('domcontentloaded');
     await page.waitForLoadState('networkidle');

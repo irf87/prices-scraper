@@ -9,6 +9,8 @@ const soriana = 'soriana';
 const laComer = 'lacomer';
 const liverpool = 'liverpool';
 const shasa = 'shasa';
+const fahorro = 'fahorro';
+const officedepot = 'officedepot';
 
 const amazonSelectors = {
   'price_dom_selector': '.a-price .a-offscreen',
@@ -56,12 +58,12 @@ const sorianaSelectors = {
   'available_dom_selector': '',
   'product_name_dom_selector': '#maincontent > div.container.product-detail.product-wrapper > div > div > div.c-product-name.col-12.d-flex.px-1 > h1',
   'product_description_dom_selector': '#videosMobile',
-  'image_product_dom_selector': 'head > meta:nth-child(17)',
+  'image_product_dom_selector': 'meta[property="og:image"]',
   'getting_mode': GETTING_MODE_TYPES.RENDER
 }
 
 const samsSelectors = {
-  'price_dom_selector': '#maincontent > section > main > div.flex.flex-column.h-100 > div:nth-child(2) > div > div.w_8XBa.w_n9r1.w_yr8k > div > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div > div.f6.gray.lh-title.mb3.dn.db-m > span > span.inline-flex.flex-column > span',
+  'price_dom_selector': '[itemprop="price"]',
   'stock_dom_selector': '',
   'available_dom_selector': '',
   'product_name_dom_selector': '#main-title',
@@ -71,7 +73,7 @@ const samsSelectors = {
 }
 
 const laComerSelectors = {
-  'price_dom_selector': '#detalleSection > div:nth-child(3) > ng-template:nth-child(1) > span',
+  'price_dom_selector': '#detalleSection > div > ng-template > span',
   'stock_dom_selector': '',
   'available_dom_selector': '',
   'product_name_dom_selector': '#detalleSection > div:nth-child(1) > div.col-xs-9.col-md-10.pl-0 > span',
@@ -96,20 +98,42 @@ const shasaSelectors = {
   'available_dom_selector': '',
   'product_name_dom_selector': '#ProductInfo-template--19412545765588__main > div.product__title__wrapper > h1',
   'product_description_dom_selector': '#ProductInfo-template--19412545765588__main > div:nth-child(10) > div > div > div > div > div',
-  'image_product_dom_selector': 'head > meta:nth-child(18)',
+  'image_product_dom_selector': 'meta[property="og:image"]',
   'getting_mode': GETTING_MODE_TYPES.RENDER
+}
+
+const fahorroSelectors = {
+  'price_dom_selector': '.price',
+  'stock_dom_selector': '',
+  'available_dom_selector': '',
+  'product_name_dom_selector': '[itemprop="name"]',
+  'product_description_dom_selector': '.value',
+  'image_product_dom_selector': 'meta[property="og:image"]',
+  'getting_mode': GETTING_MODE_TYPES.RENDER
+}
+
+const officedepotSelectors = {
+  'price_dom_selector': '#priceData',
+  'stock_dom_selector': '',
+  'available_dom_selector': '',
+  'product_name_dom_selector': '.p-name',
+  'product_description_dom_selector': 'meta[property="og:description"]',
+  'image_product_dom_selector': 'meta[property="og:image"]',
+  'getting_mode': GETTING_MODE_TYPES.FETCH
 }
 
 const SITES = {
   amazon,
   mercadoLibre,
   cyberpuerta,
-  etsy,
+  // etsy,
   soriana,
-  sams,
-  laComer,
+  // sams,
+  // laComer,
   liverpool,
-  shasa,
+  // shasa,
+  fahorro,
+  officedepot,
 };
 
 const sitesList = () => Object.keys(SITES);
@@ -124,6 +148,8 @@ const SITE_SELECTORS = {
   [sams]: samsSelectors,
   [liverpool]: liverpoolSelectors,
   [shasa]: shasaSelectors,
+  [fahorro]:  fahorroSelectors,
+  [officedepot]: officedepotSelectors,
 };
 
 const SITE_URL = {
@@ -136,6 +162,8 @@ const SITE_URL = {
   [sams]:  'sams.com.mx',
   [liverpool]: 'liverpool.com.mx',
   [shasa]: 'shasa.com',
+  [fahorro]: 'fahorro.com',
+  [officedepot]: 'officedepot.com.mx'
 }
 
 const getSiteFromUrl = (url) => {
