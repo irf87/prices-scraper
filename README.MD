@@ -1,81 +1,71 @@
-# INSTRUCTIONS TO USE PRICES SCRAPER
+# Price Scraper
 
-1. Important after use this project, copy the database in the path **/database/price_scraper.db** into root project path.
+A powerful web scraping tool for tracking product prices with Telegram notifications.
 
-2. Make a copy of file **env** and rename it by **.env**
+## Client Application
 
-3. You need sqlite installed in your system. [Official download page](https://www.sqlite.org/download.html)
+This project has a companion mobile application built with React Native. You can find it at [Price Scraper App](https://github.com/irf87/price-scraper-app).
 
-    In linux just run a command to install it
-    ```
-    sudo apt install sqlite3
-    ```
+## Prerequisites
 
-    In some version of macOs is already installed, to check:
-    ```
-    sqlite3 --version
-    ```
-4. You need playwright
+- SQLite installed on your system
+- Node.js and Yarn package manager
+- Playwright for web scraping
 
-    ```
-    npx playwright install
-    ```
+## Installation
 
+1. **Database Setup**
+   - Copy the database from `/database/price_scraper.db` to the project root directory
 
-## Create your bot in telegram
-To receive notifications about product changes, you need to create a bot.
+2. **Environment Configuration**
+   - Copy the `env` file and rename it to `.env`
+   - See [Environment Variables Guide](ENV_INSTRUCTIONS.MD) for detailed configuration
 
-1. You need to create a telegram bot token and set it in the file .env **TELEGRAM_BOT_TOKEN**
+3. **SQLite Installation**
+   - **Linux**: `sudo apt install sqlite3`
+   - **macOS**: Check if installed with `sqlite3 --version`
+   - [Official SQLite Download Page](https://www.sqlite.org/download.html)
 
-[Link To create a BOT token](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/tutorials.md)
+4. **Playwright Installation**
+   ```bash
+   npx playwright install
+   ```
 
-2. Also you need a CHAT ID, before you start with your BOT, send whatever message, then go to this URL, replece with your telegram token
+## Telegram Bot Setup
 
-(https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates)
+1. Create a Telegram bot to receive notifications:
+   - Get your bot token from [Telegram Bot API](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/tutorials.md)
+   - Set the token in `.env` as `TELEGRAM_BOT_TOKEN`
 
-In the response find the **chat.id** and set it in **TELEGRAM_BOT_CHAT_ID** inside your .env file
+2. Get your Chat ID:
+   - Send a message to your bot
+   - Visit: `https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates`
+   - Find your `chat.id` in the response
+   - Set it in `.env` as `TELEGRAM_BOT_CHAT_ID`
 
-## Run the project
+## Running the Application
 
-USE YARN insted of NPM
+The application consists of two main components:
 
-It's divided by 2 important files
-
-- server.js there is an app client for the server [PRICE SCRAPER APP](https://github.com/irf87/price-scraper-app)
-- scraper.js
-
-### server.js
-
-It's the api run with node/nodemon/pm2 or just this:
-
-```
+### 1. API Server (server.js)
+```bash
 node server.js
 ```
+- Manages products, rules, and scraping configurations
+- Access API documentation at `http://localhost:{PORT}/api-docs`
 
-In there you can add products, rules and the page where the program scrapes
-
-### scaper.js
-
-It's the core, you can run at once and set the interval in the env file with the property SCRAPPER_INTERVAL_TIME, if match with you rules it send you a notification in your telegram bot.
-
-```
-node scraper.js
-```
-
-or recommended
-
-```
+### 2. Scraper (scraper.js)
+```bash
 node --expose-gc scraper.js
 ```
+- Core scraping functionality
+- Runs at intervals specified in `.env`
+- Sends notifications via Telegram when price changes are detected
 
-## Show documentation
+## API Documentation
 
+Access the API documentation at:
 ```
-<HOST>/api-docs
+http://localhost:{PORT}/api-docs
 ```
-
-For example if the value _PORT of env file is 8080, the url to see the documentation should be:
-
-```
-<HOST>/api-docs
-```
+Replace `{PORT}` with your configured port number (default: 8082).
