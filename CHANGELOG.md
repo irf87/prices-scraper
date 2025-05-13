@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/irf87/prices-scraper/compare/v1.5.0...v1.6.0) (2025-05-13)
+
+
+### Features
+
+* add html selectors and minor improvements ([3c76ff5](https://github.com/irf87/prices-scraper/commit/3c76ff570aea42857ef9aaec38d2f1f92a6f0f9c))
+* add more selectors ([e097e31](https://github.com/irf87/prices-scraper/commit/e097e316ef3801373409a62bba85fce8aac41176))
+* create relation between scraped product with category and list ([0a5a9fd](https://github.com/irf87/prices-scraper/commit/0a5a9fd09446b57d0908415a7c354c5110d82219))
+* improve notifications api ([a1a865b](https://github.com/irf87/prices-scraper/commit/a1a865b7d5bdfde00d8bcc12b333ef28b073cab8))
+* improve readme.md ([2241899](https://github.com/irf87/prices-scraper/commit/22418997adfa1125bd773d942625611f2b815a9c))
+
+
+### Bug Fixes
+
+* cath error if rule is not found it ([3c06056](https://github.com/irf87/prices-scraper/commit/3c060560011d58ce7de184163036e224ce12b075))
+* correction in Node threads that were terminating the execution. ([a1cfbfd](https://github.com/irf87/prices-scraper/commit/a1cfbfd9ff3dddb95f46a46b730bcd66cccbee5b))
+
 ## [1.5.0](https://github.com/irf87/prices-scraper/compare/v1.4.0...v1.5.0) (2025-04-12)
 
 
