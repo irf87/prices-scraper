@@ -58,6 +58,16 @@ In there you can add products, rules and the page where the program scrapes
 
 It's the core, you can run at once and set the interval in the env file with the property SCRAPPER_INTERVAL_TIME, if match with you rules it send you a notification in your telegram bot.
 
+```
+node scraper.js
+```
+
+or recommended
+
+```
+node --expose-gc scraper.js
+```
+
 ## Show documentation
 
 ```
