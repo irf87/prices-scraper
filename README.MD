@@ -12,6 +12,23 @@ This project has a companion mobile application built with React Native. You can
 - Node.js and Yarn package manager
 - Playwright for web scraping
 
+## Script Permissions
+
+Before running any of the scripts, you need to make them executable. Run the following command in your terminal:
+
+```bash
+chmod +x setup-docker.sh update-docker.sh backup-db.sh restore-db.sh
+```
+
+This command will:
+- Make all Docker-related scripts executable
+- Allow you to run them using `./script-name.sh`
+- Ensure proper execution of the scripts
+
+> **Note:**  
+> If you get a "Permission denied" error when trying to run a script,  
+> make sure you've applied the permissions using the command above.
+
 ## Installation
 
 1. **Database Setup**
@@ -93,7 +110,7 @@ The application needs environment variables to work properly. These variables ar
 To build and run the project in Docker, simply use the provided script:
 
 ```sh
-./setup-db.sh
+./setup-docker.sh
 ```
 
 This script will:
@@ -107,6 +124,91 @@ After running the script, you can access the API at [http://localhost:8082](http
 > **Note:**  
 > You no longer need to run `docker buildx build`, `docker run`, or manually copy the database file.  
 > The script handles everything for you.
+
+## Database Management with Docker
+
+The application uses Docker volumes to persist the database data. This is crucial for maintaining your data between container restarts and updates.
+
+### Important Database Management Scripts
+
+1. **Setup Docker Environment** (`setup-docker.sh`):
+   ```bash
+   ./setup-docker.sh
+   ```
+   - Creates a Docker volume for the database
+   - Builds and starts the container
+   - Initializes the database if it's the first run
+   - Sets up the complete Docker environment
+
+2. **Update Application** (`update-docker.sh`):
+   ```bash
+   ./update-docker.sh
+   ```
+   - Automatically creates a backup before updating
+   - Pulls latest changes from git
+   - Rebuilds the container
+   - Preserves the database volume
+   - **IMPORTANT**: Always use this script for updates instead of manual commands
+
+3. **Backup Database** (`backup-db.sh`):
+   ```bash
+   ./backup-db.sh
+   ```
+   - Creates a timestamped backup of your database
+   - Stores backups in the `./backups` directory
+   - Automatically keeps only the last 5 backups
+   - **IMPORTANT**: Run this before any major updates or container rebuilds
+
+4. **Restore Database** (`restore-db.sh`):
+   ```bash
+   ./restore-db.sh ./backups/db-backup-YYYYMMDD-HHMMSS.tar.gz
+   ```
+   - Restores a specific backup
+   - Automatically handles container restart
+   - Use this if you need to recover from a backup
+
+### Best Practices for Database Management
+
+1. **Regular Backups**
+   - Make regular backups of your database
+   - Store backups in a safe location
+   - Consider automating backups with cron jobs
+
+2. **Before Updates**
+   - Always create a backup before updating the container
+   - Use `./backup-db.sh` to ensure data safety
+
+3. **Volume Management**
+   - The database is stored in a Docker volume named `price-scraper-db`
+   - Never delete this volume unless you have a backup
+   - Use `docker volume ls` to verify the volume exists
+
+4. **Troubleshooting**
+   If you encounter database issues:
+   1. Check if the volume exists: `docker volume ls | grep price-scraper-db`
+   2. Verify container status: `docker ps | grep price-scraper`
+   3. Check container logs: `docker logs price-scraper`
+   4. Restore from backup if necessary
+
+### Common Commands
+
+```bash
+# List all volumes
+docker volume ls
+
+# Inspect volume details
+docker volume inspect price-scraper-db
+
+# Remove volume (CAUTION: only if you have a backup)
+docker volume rm price-scraper-db
+
+# View container logs
+docker logs price-scraper
+```
+
+> **WARNING:**  
+> Never delete the Docker volume without having a backup.  
+> Always run `./backup-db.sh` before any major changes to the container.
 
 ## Testing the Application
 
