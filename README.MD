@@ -8,6 +8,7 @@ This project has a companion mobile application built with React Native. You can
 
 ## Prerequisites
 
+- Node.js v18.0.0 or higher
 - SQLite installed on your system
 - Node.js and Yarn package manager
 - Playwright for web scraping
@@ -31,19 +32,25 @@ This command will:
 
 ## Installation
 
-1. **Database Setup**
+1. **Install Dependencies**
+   ```bash
+   yarn install
+   ```
+   > **Note:** While `npm install` can also be used, we recommend using Yarn for better dependency management and faster installation.
+
+2. **Database Setup**
    - Copy the database from `/database/price_scraper.db` to the project root directory
 
-2. **Environment Configuration**
+3. **Environment Configuration**
    - Copy the `env` file and rename it to `.env`
    - See [Environment Variables Guide](ENV_INSTRUCTIONS.MD) for detailed configuration
 
-3. **SQLite Installation**
+4. **SQLite Installation**
    - **Linux**: `sudo apt install sqlite3`
    - **macOS**: Check if installed with `sqlite3 --version`
    - [Official SQLite Download Page](https://www.sqlite.org/download.html)
 
-4. **Playwright Installation**
+5. **Playwright Installation**
    ```bash
    npx playwright install
    ```
