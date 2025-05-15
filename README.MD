@@ -43,6 +43,10 @@ This project has a companion mobile application built with React Native. You can
    - Find your `chat.id` in the response
    - Set it in `.env` as `TELEGRAM_BOT_CHAT_ID`
 
+3. Test Telegram Configuration:
+   - Open: http://{localhost}:{8082}/api/test/telegram
+   - This will verify if your Telegram bot is properly configured
+
 ## Running the Application
 
 The application consists of two main components:
@@ -84,78 +88,25 @@ The application needs environment variables to work properly. These variables ar
 - Keep a `.env.example` file in the repository as a template
 - For detailed environment configuration, see [Environment Variables Guide](ENV_INSTRUCTIONS.MD)
 
-## Building the Docker Image
+## Building and Running the Docker Image
 
-### For Mac with M1, M2, M3, or M4 chip (ARM64)
-```bash
-docker buildx build --platform linux/arm64 -t prices-scraper .
+To build and run the project in Docker, simply use the provided script:
+
+```sh
+./setup-db.sh
 ```
 
-### For Linux or Windows with Intel/AMD processor (x86_64)
-```bash
-docker buildx build --platform linux/amd64 -t prices-scraper .
-```
+This script will:
+- Ask you for the architecture (ARM64, AMD64, or both).
+- Build the Docker image.
+- Start the container with the correct port mapping.
+- Copy the database file into the container.
 
-### For building both versions at once
-```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t prices-scraper .
-```
+After running the script, you can access the API at [http://localhost:8082](http://localhost:8082).
 
-## Running the Container
-
-To run the container with environment variables from .env file:
-```bash
-docker run --env-file .env -p 8082:8082 -v price-scraper-db:/app/price_scraper.db prices-scraper
-```
-
-## Updating the Container
-
-When you pull new changes from the repository, you need to rebuild and restart the container. We provide a script to automate this process:
-
-1. Make the script executable:
-```bash
-chmod +x update-docker.sh
-```
-
-2. Run the update script:
-```bash
-./update-docker.sh
-```
-
-The script will:
-- Stop and remove the current container
-- Pull the latest changes from the repository
-- Detect your system architecture automatically
-- Build the new Docker image
-- Start the new container
-
-### Database Persistence
-- The SQLite database is stored in a Docker volume named `price-scraper-db`
-- This ensures your data persists between container updates
-- The volume is automatically created if it doesn't exist
-- Your data is safe during updates and container restarts
-
-### Managing the Database Volume
-
-#### View Volume Information
-```bash
-docker volume inspect price-scraper-db
-```
-
-#### Backup Database
-```bash
-docker run --rm -v price-scraper-db:/data -v $(pwd):/backup alpine tar czf /backup/price_scraper_backup.tar.gz /data
-```
-
-#### Restore from Backup
-```bash
-docker run --rm -v price-scraper-db:/data -v $(pwd):/backup alpine sh -c "cd /data && tar xzf /backup/price_scraper_backup.tar.gz"
-```
-
-#### Remove Volume (Warning: This will delete all data!)
-```bash
-docker volume rm price-scraper-db
-```
+> **Note:**  
+> You no longer need to run `docker buildx build`, `docker run`, or manually copy the database file.  
+> The script handles everything for you.
 
 ## Testing the Application
 
@@ -166,8 +117,9 @@ After starting the container, you can test if it's working by visiting these URL
    - This shows all available API endpoints
 
 2. Test Endpoint:
-   - Open: http://localhost:8082/test/
+   - Open: http://localhost:8082/api/test/
    - You should see "Server is working!"
+
 
 ## Important Notes
 

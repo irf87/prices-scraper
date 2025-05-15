@@ -4,6 +4,7 @@ const DEBUG	= process.env._IS_DEBUG;
 const isDebug = DEBUG === 'true'
 
 const Database = require('better-sqlite3');
+const path = require('path');
 
 const options = {
   fileMustExist: true,
@@ -13,7 +14,11 @@ if (isDebug) {
   options.verbose = console.log;
 }
 
-const db = new Database('price_scraper.db', options);
+const isDocker = process.env.DOCKER === 'true';
+const dbPath = isDocker 
+  ? '/app/price_scraper.db'
+  : path.join(__dirname, '../../price_scraper.db');
+const db = new Database(dbPath, options);
 
 const { transform } = require('../../utils/paramsTransformer');
 

@@ -33,20 +33,22 @@ RUN yarn add better-sqlite3@^8.0.0
 # Copy the rest of the application
 COPY . .
 
-# Create startup script
-RUN echo '#!/bin/sh\nnode server.js & node --expose-gc scraper.js' > /app/start.sh && \
+# Create startup script that handles default port
+RUN echo '#!/bin/sh\n\
+if [ -z "$_PORT" ]; then\n\
+    export _PORT=8082\n\
+fi\n\
+node server.js & node --expose-gc scraper.js' > /app/start.sh && \
     chmod +x /app/start.sh
 
-# Set environment variables
-ENV _PORT=8082
+# Set environment variables with defaults
+ENV _PORT=${_PORT:-8082}
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
-
-# Define volume for database persistence
-VOLUME ["/app/price_scraper.db"]
+ENV DOCKER=true
 
 # Expose the API port
-EXPOSE 8082
+EXPOSE ${_PORT:-8082}
 
 # Start the server
 CMD ["/app/start.sh"]

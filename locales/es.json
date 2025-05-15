@@ -4,5 +4,6 @@
   "PRICE_LOWER": "⬇️ Disminución de precio. El precio del producto {{name}} es MENOR igual a ${{priceRule}}, su precio es ${{price}}.\n\n(Sitio):[{{{site}}}]",
   "MATCH": "✅ Se encontró el patron {{ruleMatch}} en {{word}} en el producto {{name}}.\n\n(Sitio):[{{{site}}}]",
   "STOCK_CHANGES": "Hubo un cambio en el stock del producto {{name}}, stock acutal {{stock}}, stock previo {{lastStock}}.\n\n(Sitio):[{{{site}}}]",
-  "DISABLE_SCRAPER_PRODUCT": "🚫 Se deshabilitó el scraper con id {{id}} del producto {{name}}"
+  "DISABLE_SCRAPER_PRODUCT": "🚫 Se deshabilitó el scraper con id {{id}} del producto {{name}}",
+  "TELEGRAM_TEST": "✅ Configuración de Telegram correcta\n\nEl sistema está listo para enviar notificaciones a través de Telegram."
 }
