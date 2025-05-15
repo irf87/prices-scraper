@@ -105,7 +105,56 @@ docker buildx build --platform linux/arm64,linux/amd64 -t prices-scraper .
 
 To run the container with environment variables from .env file:
 ```bash
-docker run --env-file .env -p 8082:8082 prices-scraper
+docker run --env-file .env -p 8082:8082 -v price-scraper-db:/app/price_scraper.db prices-scraper
+```
+
+## Updating the Container
+
+When you pull new changes from the repository, you need to rebuild and restart the container. We provide a script to automate this process:
+
+1. Make the script executable:
+```bash
+chmod +x update-docker.sh
+```
+
+2. Run the update script:
+```bash
+./update-docker.sh
+```
+
+The script will:
+- Stop and remove the current container
+- Pull the latest changes from the repository
+- Detect your system architecture automatically
+- Build the new Docker image
+- Start the new container
+
+### Database Persistence
+- The SQLite database is stored in a Docker volume named `price-scraper-db`
+- This ensures your data persists between container updates
+- The volume is automatically created if it doesn't exist
+- Your data is safe during updates and container restarts
+
+### Managing the Database Volume
+
+#### View Volume Information
+```bash
+docker volume inspect price-scraper-db
+```
+
+#### Backup Database
+```bash
+docker run --rm -v price-scraper-db:/data -v $(pwd):/backup alpine tar czf /backup/price_scraper_backup.tar.gz /data
+```
+
+#### Restore from Backup
+```bash
+docker run --rm -v price-scraper-db:/data -v $(pwd):/backup alpine sh -c "cd /data && tar xzf /backup/price_scraper_backup.tar.gz"
+```
+
+#### Remove Volume (Warning: This will delete all data!)
+```bash
+docker volume rm price-scraper-db
 ```
 
 ## Testing the Application
@@ -125,8 +174,10 @@ After starting the container, you can test if it's working by visiting these URL
 - The scraper runs automatically inside the container - you don't need to start it manually
 - The application uses port 8082 - make sure this port is free on your computer
 - The API documentation is available at http://localhost:8082/api-docs
-- All data is stored in a SQLite database inside the container
+- All data is stored in a SQLite database inside a Docker volume
 - Always use the `--env-file .env` flag when running the container to ensure all environment variables are loaded
+- Remember to rebuild the container after pulling new changes from the repository
+- Make regular backups of your database volume
 
 ## Troubleshooting
 

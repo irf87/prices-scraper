@@ -42,6 +42,9 @@ ENV _PORT=8082
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 
+# Define volume for database persistence
+VOLUME ["/app/price_scraper.db"]
+
 # Expose the API port
 EXPOSE 8082
 
