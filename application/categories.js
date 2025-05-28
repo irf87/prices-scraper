@@ -12,7 +12,7 @@ class Categories {
         category.created_at = new Date().toISOString();
         category.updated_at = new Date().toISOString();
         const stmt = dbInstance.prepareInsert('categories', category);
-        const result = stmt.run(category.name, category.description, category.created_at, category.updated_at);
+        const result = stmt.run(...Object.values(category));
         return { id: result.lastInsertRowid, ...category };
     }
 

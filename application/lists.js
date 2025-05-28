@@ -13,7 +13,7 @@ class Lists {
         list.created_at = new Date().toISOString();
         list.updated_at = new Date().toISOString();
         const stmt = dbInstance.prepareInsert('lists', list);
-        const result = stmt.run(list.name, list.description, list.url_img_cover, list.created_at, list.updated_at);
+        const result = stmt.run(...Object.values(list));
         return { id: result.lastInsertRowid, ...list };
     }
 
