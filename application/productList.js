@@ -84,8 +84,10 @@ class ProductList {
      * @returns {boolean} Success status
      */
     delete(productId, listId) {
-        const stmt = dbInstance.prepareDelete('product_list', `product_id = ${productId} AND list_id = ${listId}`);
-        const result = stmt.run(productId, listId);
+        const stmt = dbInstance.execute(
+            `DELETE FROM product_list WHERE product_id = ${productId} AND list_id = ${listId}`
+        );
+        const result = stmt.run();
         return result.changes > 0;
     }
 
