@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/irf87/prices-scraper/compare/v1.6.0...v1.7.0) (2025-05-31)
+
+
+### Features
+
+* support for docker ([e484c5d](https://github.com/irf87/prices-scraper/commit/e484c5de624991df201f72a52f691a50689e5a49))
+
+
+### Bug Fixes
+
+* fix unassigned product from list ([8b80a6a](https://github.com/irf87/prices-scraper/commit/8b80a6a24ee73b4c07e83bf4834eb8358e3d3c89))
+* fixed the way to create a category and list ([6058d12](https://github.com/irf87/prices-scraper/commit/6058d1231d86ba115a061598f570f0884e8698af))
+
 ## [1.6.0](https://github.com/irf87/prices-scraper/compare/v1.5.0...v1.6.0) (2025-05-13)
 
 
