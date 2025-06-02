@@ -1,6 +1,6 @@
 {
   "name": "prices-scraper",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Scraper to find item's prices",
   "main": "index.js",
   "scripts": {

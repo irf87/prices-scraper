@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/irf87/prices-scraper/compare/v1.7.0...v1.7.1) (2025-06-02)
+
+
+### Bug Fixes
+
+* remove worker threads logic ([2b8c15d](https://github.com/irf87/prices-scraper/commit/2b8c15d01a6e9fe3a85f42dd9678fd762f193151))
+* remove worker threads logic ([db6abbd](https://github.com/irf87/prices-scraper/commit/db6abbd5427c18e550a150ee42062285bc01a9f2))
+
 ## [1.7.0](https://github.com/irf87/prices-scraper/compare/v1.6.0...v1.7.0) (2025-05-31)
 
 
