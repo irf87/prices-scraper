@@ -84,7 +84,7 @@ node server.js
 
 ### 2. Scraper (scraper.js)
 ```bash
-node --expose-gc scraper.js
+node scraper.js
 ```
 - Core scraping functionality
 - Runs at intervals specified in `.env`
