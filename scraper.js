@@ -27,69 +27,41 @@ process.on('exit', (code) => {
 const SCRAPPER_INTERVAL = process.env.SCRAPPER_INTERVAL_TIME;
 const SCRAPPER_INTERVAL_UNIT = process.env.SCRAPPER_INTERVAL_UNIT;
 
-const { Worker } = require('worker_threads');
 const GETTING_MODE_TYPES = require('./utils/gettingModeTypes');
-
 const { parseToMiliseconds } = require('./utils/time');
+const scraperCtrl = require('./presentation/scraped/controller');
+const { executeScraping } = require('./application/scraper/execute');
+const { printDate } = require('./utils/date/printDate');
 
-// Keep track of active workers
-let activeWorkers = new Set();
 let isExecuting = false;
 let intervalId;
 
-function cleanupWorker(worker) {
+async function executeScrapingMode(mode) {
   try {
-    if (worker && !worker.isTerminated) {
-      worker.terminate();
-      worker.unref();
-      activeWorkers.delete(worker);
-    }
-  } catch (error) {
-    console.error('Error cleaning up worker:', error);
-  }
-}
-
-function createWorker(mode) {
-  try {
-    const worker = new Worker('./worker.js', {
-      resourceLimits: {
-        maxOldGenerationSizeMb: 512,
-        maxYoungGenerationSizeMb: 256,
-        codeRangeSizeMb: 64
-      }
-    });
+    const rows = await scraperCtrl.getEnables({ gettingMode: mode });
+    console.log(`rows: ${rows.length} - gettingMode: ${mode}`);
     
-    worker.unref(); // Prevent worker from keeping the process alive
-    activeWorkers.add(worker);
-
-    worker.on('message', (message) => {
-      if (message === 'done') {
-        console.log(`${mode} worker done`);
-        cleanupWorker(worker);
-      }
-    });
-
-    worker.on('error', (error) => {
-      console.error(`Error in ${mode} worker:`, error);
-      cleanupWorker(worker);
-    });
-
-    worker.on('exit', (code) => {
-      if (code !== 0) {
-        console.error(`${mode} worker stopped with exit code ${code}`);
-      }
-      cleanupWorker(worker);
-    });
-
-    worker.postMessage(mode);
-    return worker;
+    if (rows.length > 0) {
+      let cont = 0;
+      console.log(`\nSTART SCRAPING ${mode} AT`);
+      printDate();
+      console.log('\n');
+      
+      const toScraping = rows;
+      const arrayLength = rows.length;
+      await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
+      console.log(`\nFINISH SCRAPING ${mode} AT`);
+      printDate();
+      console.log('\n');
+    }
+    return 'done';
   } catch (error) {
-    console.error(`Error creating ${mode} worker:`, error);
-    return null;
+    console.error(`Error in scraping for ${mode}:`, error);
+    return 'error';
   }
 }
 
-function execute() {
+async function execute() {
   if (isExecuting) {
     console.log('Previous execution still running, skipping...');
     return;
@@ -98,13 +70,9 @@ function execute() {
   try {
     isExecuting = true;
     
-    // Cleanup any existing workers
-    activeWorkers.forEach(worker => cleanupWorker(worker));
-    activeWorkers.clear();
-
-    // Create new workers
-    createWorker(GETTING_MODE_TYPES.FETCH);
-    createWorker(GETTING_MODE_TYPES.RENDER);
+    executeScrapingMode(GETTING_MODE_TYPES.FETCH);
+    executeScrapingMode(GETTING_MODE_TYPES.RENDER);
+    
   } catch (error) {
     console.error('Error in execute function:', error);
   } finally {
@@ -114,16 +82,11 @@ function execute() {
 
 // Cleanup function for graceful shutdown
 async function cleanup() {
-  console.log('Cleaning up workers...');
-  activeWorkers.forEach(worker => cleanupWorker(worker));
-  activeWorkers.clear();
+  console.log('Cleaning up...');
   
   if (intervalId) {
     clearInterval(intervalId);
   }
-  
-  // Give workers a moment to clean up
-  await new Promise(resolve => setTimeout(resolve, 1000));
   
   process.exit(0);
 }
@@ -158,11 +121,3 @@ try {
 } catch (error) {
   console.error('Error setting up interval:', error);
 }
-
-// Keep the process alive
-setInterval(() => {
-  if (process.memoryUsage().heapUsed > 1024 * 1024 * 1024) { // 1GB
-    console.log('Memory usage too high, cleaning up...');
-    global.gc && global.gc();
-  }
-}, 30000);
