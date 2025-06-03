@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.2](https://github.com/irf87/prices-scraper/compare/v1.7.1...v1.7.2) (2025-06-03)
+
+
+### Bug Fixes
+
+* database ([22f4cef](https://github.com/irf87/prices-scraper/commit/22f4cefa6b42e3cf6e8018943ba942292bab5ede))
+* deprecate last_date_sync ([f46fff7](https://github.com/irf87/prices-scraper/commit/f46fff765ceed332859f7e80503a88f3905d5f3a))
+* fixed error in data base ([77d3d9b](https://github.com/irf87/prices-scraper/commit/77d3d9b1c10226b344219bc2dbf123b620a4173c))
+
 ### [1.7.1](https://github.com/irf87/prices-scraper/compare/v1.7.0...v1.7.1) (2025-06-02)
 
 
