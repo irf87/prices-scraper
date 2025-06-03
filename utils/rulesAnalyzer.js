@@ -154,7 +154,6 @@ class RulesAnalyzer {
       product_scraped_id: this.scraperId,
       date: this.date,
       product_id: this.product.id,
-      last_date_sync: null,
     };
 
     if (typeof this.price === 'number') oSnap.price = this.price; 

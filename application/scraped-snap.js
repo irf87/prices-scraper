@@ -37,12 +37,6 @@ const getAvg = async (productScrapedId) => {
   return row.all();
 }
 
-const updateSyncDate = async (productScrapedId, syncDate) => {
-  const updateSync = dbInstance.prepareUpdate('product_scraped_snap', { last_date_sync: syncDate }, `product_scraped_id=${productScrapedId}`);
-  const info = updateSync.run();
-  return { success: info.changes >= 1 ? true : false };
-}
-
 const updateScrapedSnap = async (condition, params) => {
   const updateSync = dbInstance.prepareUpdate('product_scraped_snap', params, condition);
   const info = updateSync.run();
@@ -96,7 +90,6 @@ const scrapedSnap = {
   getLastRow,
   create,
   getAvg,
-  updateSyncDate,
   updateScrapedSnap,
   getProductScrapedRecords,
 };
