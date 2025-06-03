@@ -13,23 +13,6 @@ This project has a companion mobile application built with React Native. You can
 - Node.js and Yarn package manager
 - Playwright for web scraping
 
-## Script Permissions
-
-Before running any of the scripts, you need to make them executable. Run the following command in your terminal:
-
-```bash
-chmod +x setup-docker.sh update-docker.sh backup-db.sh restore-db.sh
-```
-
-This command will:
-- Make all Docker-related scripts executable
-- Allow you to run them using `./script-name.sh`
-- Ensure proper execution of the scripts
-
-> **Note:**  
-> If you get a "Permission denied" error when trying to run a script,  
-> make sure you've applied the permissions using the command above.
-
 ## Installation
 
 1. **Install Dependencies**
@@ -99,6 +82,24 @@ http://localhost:{PORT}/api-docs
 Replace `{PORT}` with your configured port number (default: 8082).
 
 # Price Scraper Docker Guide
+
+## Script Permissions
+
+Before running any of the scripts, you need to make them executable. Run the following command in your terminal:
+
+```bash
+chmod +x setup-docker.sh update-docker.sh backup-db.sh restore-db.sh
+```
+
+This command will:
+- Make all Docker-related scripts executable
+- Allow you to run them using `./script-name.sh`
+- Ensure proper execution of the scripts
+
+> **Note:**  
+> If you get a "Permission denied" error when trying to run a script,  
+> make sure you've applied the permissions using the command above.
+
 
 This guide explains how to build and run the Price Scraper application using Docker on different computer types.
 
