@@ -13,7 +13,7 @@ This document explains the environment variables used in the Price Scraper appli
 
 ## Scraper Configuration
 - `TIMEOUT_ANALIZER`: Timeout in milliseconds for DOM analysis (default: 10000)
-- `SCRAPPER_INTERVAL`: Time interval between scraping operations
+- `SCRAPPER_INTERVAL_TIME`: Time interval between scraping operations
 - `SCRAPPER_INTERVAL_UNIT`: Unit for the interval (e.g., "hours", "minutes")
 
 ## How to Configure
@@ -35,6 +35,6 @@ ENABLE_NOTIFICATIONS=true
 
 # SCRAPER CONFIG
 TIMEOUT_ANALIZER=10000
-SCRAPPER_INTERVAL=4
+SCRAPPER_INTERVAL_TIME=4
 SCRAPPER_INTERVAL_UNIT="hours"
 ```
