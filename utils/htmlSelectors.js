@@ -11,6 +11,8 @@ const liverpool = 'liverpool';
 const shasa = 'shasa';
 const fahorro = 'fahorro';
 const officedepot = 'officedepot';
+const aliexpress = 'aliexpress';
+const lumen = 'lumen';
 
 const amazonSelectors = {
   'price_dom_selector': '.a-price .a-offscreen',
@@ -122,6 +124,26 @@ const officedepotSelectors = {
   'getting_mode': GETTING_MODE_TYPES.FETCH
 }
 
+const aliexpressSelectors = {
+  'price_dom_selector': '.product-price-value',
+  'stock_dom_selector': '',
+  'available_dom_selector': '',
+  'product_name_dom_selector': '[data-pl="product-title"]',
+  'product_description_dom_selector': 'meta[property="og:description"]',
+  'image_product_dom_selector': 'meta[property="og:image"]',
+  'getting_mode': GETTING_MODE_TYPES.RENDER
+}
+
+const lumenSelectors = {
+  'price_dom_selector': '[itemprop="price"]',
+  'stock_dom_selector': '',
+  'available_dom_selector': '',
+  'product_name_dom_selector': '[itemprop="name"]',
+  'product_description_dom_selector': '.sobresalientes',
+  'image_product_dom_selector': 'meta[property="og:image"]',
+  'getting_mode': GETTING_MODE_TYPES.FETCH
+}
+
 const SITES = {
   amazon,
   mercadoLibre,
@@ -134,6 +156,8 @@ const SITES = {
   // shasa,
   fahorro,
   officedepot,
+  aliexpress,
+  lumen,
 };
 
 const sitesList = () => Object.keys(SITES);
@@ -150,6 +174,8 @@ const SITE_SELECTORS = {
   [shasa]: shasaSelectors,
   [fahorro]:  fahorroSelectors,
   [officedepot]: officedepotSelectors,
+  [aliexpress]: aliexpressSelectors,
+  [lumen]: lumenSelectors,
 };
 
 const SITE_URL = {
@@ -163,7 +189,9 @@ const SITE_URL = {
   [liverpool]: 'liverpool.com.mx',
   [shasa]: 'shasa.com',
   [fahorro]: 'fahorro.com',
-  [officedepot]: 'officedepot.com.mx'
+  [officedepot]: 'officedepot.com.mx',
+  [aliexpress]: 'es.aliexpress.com',
+  [lumen]: 'lumen.com.mx'
 }
 
 const getSiteFromUrl = (url) => {
