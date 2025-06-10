@@ -190,7 +190,7 @@ const SITE_URL = {
   [shasa]: 'shasa.com',
   [fahorro]: 'fahorro.com',
   [officedepot]: 'officedepot.com.mx',
-  [aliexpress]: 'es.aliexpress.com',
+  [aliexpress]: 'aliexpress.com',
   [lumen]: 'lumen.com.mx'
 }
 
