@@ -47,8 +47,8 @@ async function execute() {
   try {
     isExecuting = true;
     
-    executeScrapingMode(GETTING_MODE_TYPES.FETCH);
-    executeScrapingMode(GETTING_MODE_TYPES.RENDER);
+    await executeScrapingMode(GETTING_MODE_TYPES.FETCH);
+    await executeScrapingMode(GETTING_MODE_TYPES.RENDER);
     
   } catch (error) {
     console.error('Error in execute function:', error);
