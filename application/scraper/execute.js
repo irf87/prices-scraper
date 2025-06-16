@@ -1,4 +1,3 @@
-
 const cheerio = require('cheerio');
 const scraperCtrl = require('../../presentation/scraped/controller');
 const productCtrl = require('../../presentation/products/controller');
@@ -24,95 +23,88 @@ const t = locale.getLocale();
 const telegram = new CL_TelegramBot();
 
 const executeScraping = async (scraper, cont, arrayLength, toScraping) => {
-  if (cont >= arrayLength) {
-    return;
-  };
-  try {
-    cont ++;
-    const [product] = await productCtrl.get(scraper.product_id);
-    const rules = await scraperNotifications.getProductScraped(scraper.id);
-    if (!rules || typeof rules !== 'object') {
-      if (isDebug) {
-        console.log(`fail:${scraper.url_to_scrape} with id ${scraper.id}`);
-        console.log('A rule have not found');
+  for (let i = cont; i < arrayLength; i++) {
+    try {
+      const [product] = await productCtrl.get(toScraping[i].product_id);
+      const rules = await scraperNotifications.getProductScraped(toScraping[i].id);
+      if (!rules || typeof rules !== 'object') {
+        if (isDebug) {
+          console.log(`fail:${toScraping[i].url_to_scrape} with id ${toScraping[i].id}`);
+          console.log('A rule have not found');
+        }
+        continue;
       }
-      await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
-      return;
-    }
 
-    const { data, error } = await getHtml(scraper.url_to_scrape, scraper.getting_mode);
-    if (error) {
-      if (isDebug) {
-        console.log(`fail:${scraper.url_to_scrape}`);
-        console.log(`error:${error}`);
+      const { data, error } = await getHtml(toScraping[i].url_to_scrape, toScraping[i].getting_mode);
+      if (error) {
+        if (isDebug) {
+          console.log(`fail:${toScraping[i].url_to_scrape}`);
+          console.log(`error:${error}`);
+        }
+        continue;
       }
-      await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
-      return;
-    }
 
-    const $ = cheerio.load(data);
-    const dom = new DomAnalyzer($, data);
+      const $ = cheerio.load(data);
+      const dom = new DomAnalyzer($, data);
 
-    const promisePrice = new Promise((resolve) => {
-      if (!scraper.price_dom_selector) return resolve(null);
-      dom.getPrice(scraper.price_dom_selector, resolve);
-    });
-    const promiseStock = new Promise((resolve) => {
-      if (!scraper.stock_dom_selector) return resolve(null);
-      dom.getStock(scraper.stock_dom_selector, resolve);
-    });
-
-    const promiseAvailability = new Promise((resolve) => {
-      if (!scraper.availability_dom_selector) return resolve(null);
-      dom.getAvailability(scraper.availability_dom_selector, resolve);
-    });
-
-    const price = await promisePrice;
-    const stock = await promiseStock;
-    const availability = await promiseAvailability;
-
-    if (dom.isDisabled) {
-      scraperCtrl.update(scraper.id, { enable: 0});
-      const disabledMsg = t('DISABLE_SCRAPER_PRODUCT', {id: scraper.id, name: product.name });
-      if (isDebug) {
-        console.log('========= disabledMsg =========');
-        console.log(disabledMsg);
-        console.log('========= disabledMsg =========\n');
-      }
-      if(process.env.ENABLE_NOTIFICATIONS === 'true') {
-        telegram.send(disabledMsg);
-      }
-      await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
-      return;
-    }
-
-    const ruleAnalyze = new RulesAnalyzer(
-      price,
-      stock,
-      availability,
-      scraper.id,
-      scraper.url_to_scrape,
-      product,
-      rules,
-      t
-    );
-    await ruleAnalyze.setSnap();
-    ruleAnalyze.analyzePrice();
-    ruleAnalyze.analyzeStock();
-    ruleAnalyze.createSnap();
-
-    const toSend = ruleAnalyze.getNotificationsToSend();
-    if(toSend.length > 0 && process.env.ENABLE_NOTIFICATIONS === 'true') {
-      const toUpdate = toUpdateNotificationDate(toSend);
-      await scraperNotifications.update(rules.id, toUpdate);
-      toSend.forEach((send) => {
-        telegram.send(send.message);
+      const promisePrice = new Promise((resolve) => {
+        if (!toScraping[i].price_dom_selector) return resolve(null);
+        dom.getPrice(toScraping[i].price_dom_selector, resolve);
       });
+      const promiseStock = new Promise((resolve) => {
+        if (!toScraping[i].stock_dom_selector) return resolve(null);
+        dom.getStock(toScraping[i].stock_dom_selector, resolve);
+      });
+
+      const promiseAvailability = new Promise((resolve) => {
+        if (!toScraping[i].availability_dom_selector) return resolve(null);
+        dom.getAvailability(toScraping[i].availability_dom_selector, resolve);
+      });
+
+      const price = await promisePrice;
+      const stock = await promiseStock;
+      const availability = await promiseAvailability;
+
+      if (dom.isDisabled) {
+        scraperCtrl.update(toScraping[i].id, { enable: 0});
+        const disabledMsg = t('DISABLE_SCRAPER_PRODUCT', {id: toScraping[i].id, name: product.name });
+        if (isDebug) {
+          console.log('========= disabledMsg =========');
+          console.log(disabledMsg);
+          console.log('========= disabledMsg =========\n');
+        }
+        if(process.env.ENABLE_NOTIFICATIONS === 'true') {
+          telegram.send(disabledMsg);
+        }
+        continue;
+      }
+
+      const ruleAnalyze = new RulesAnalyzer(
+        price,
+        stock,
+        availability,
+        toScraping[i].id,
+        toScraping[i].url_to_scrape,
+        product,
+        rules,
+        t
+      );
+      await ruleAnalyze.setSnap();
+      ruleAnalyze.analyzePrice();
+      ruleAnalyze.analyzeStock();
+      ruleAnalyze.createSnap();
+
+      const toSend = ruleAnalyze.getNotificationsToSend();
+      if(toSend.length > 0 && process.env.ENABLE_NOTIFICATIONS === 'true') {
+        const toUpdate = toUpdateNotificationDate(toSend);
+        await scraperNotifications.update(rules.id, toUpdate);
+        toSend.forEach((send) => {
+          telegram.send(send.message);
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
-    await executeScraping(toScraping[cont], cont, arrayLength, toScraping);
-    
-  } catch (error) {
-    console.error(error);
   }
 }
 

@@ -1,28 +1,5 @@
 require('dotenv').config();
 
-// Add global error handlers
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
-  // Don't exit the process, just log the error
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  // Don't exit the process, just log the error
-});
-
-// Prevent process from exiting on uncaught errors
-process.on('exit', (code) => {
-  console.log(`Process about to exit with code: ${code}`);
-  // Only attempt to restart if it's not a manual termination
-  if (code !== 0 && !process.manualShutdown) {
-    console.log('Attempting to restart process...');
-    require('child_process').spawn(process.argv[0], process.argv.slice(1), {
-      detached: true,
-      stdio: 'inherit'
-    });
-  }
-});
 
 const SCRAPPER_INTERVAL = process.env.SCRAPPER_INTERVAL_TIME;
 const SCRAPPER_INTERVAL_UNIT = process.env.SCRAPPER_INTERVAL_UNIT;
@@ -91,18 +68,6 @@ async function cleanup() {
   process.exit(0);
 }
 
-// Handle process termination
-process.on('SIGTERM', () => {
-  process.manualShutdown = true;
-  cleanup();
-});
-
-process.on('SIGINT', () => {
-  process.manualShutdown = true;
-  cleanup();
-});
-
-// Wrap the initial execution in try-catch
 try {
   execute();
 } catch (error) {
