@@ -30,7 +30,7 @@ const getProductScraped = async () => {
     product_scraped.id as product_scraped_id,
     product.name, product.description,
     product.url_info, product.url_img, 
-    product_scraped.url_to_scrape, last_snap.price, last_snap.date,
+    product_scraped.url_to_scrape, product_scraped.referred_code, last_snap.price, last_snap.date,
     CASE WHEN product_scraped.enable = 1 THEN true ELSE false END as enable
     FROM product_scraped
     JOIN product ON product_scraped.product_id = product.id
@@ -56,7 +56,7 @@ const getProductScrapedById = async (productId) => {
     product_scraped.id as product_scraped_id,
     product.name, product.description,
     product.url_info, product.url_img, 
-    product_scraped.url_to_scrape, last_snap.price, last_snap.date
+    product_scraped.url_to_scrape, product_scraped.referred_code, last_snap.price, last_snap.date
     FROM product_scraped
     JOIN product ON product_scraped.product_id = product.id
     JOIN (

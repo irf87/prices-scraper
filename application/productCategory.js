@@ -104,6 +104,7 @@ class ProductCategory {
                 product.url_info, 
                 product.url_img, 
                 product_scraped.url_to_scrape, 
+                product_scraped.referred_code,
                 last_snap.price, 
                 last_snap.date,
                 pc.category_id,

@@ -54,6 +54,26 @@ This project has a companion mobile application built with React Native. You can
    - Open: http://{localhost}:{8082}/api/test/telegram
    - This will verify if your Telegram bot is properly configured
 
+## Database Migrations
+
+To run database migration scripts, use the following command. This is useful when you need to apply schema changes to your database.
+
+### Running a Specific Migration
+
+To run a migration script on the main `price_scraper.db` database, execute the following command, replacing `[migration_file.js]` with the name of the migration file you want to run:
+
+```bash
+DB_PATH=price_scraper.db node scripts/migrations/[migration_file.js]
+```
+
+For example, to run the script `001_add_referred_code_to_product_scraped.js`, you would use:
+
+```bash
+DB_PATH=price_scraper.db node scripts/migrations/001_add_referred_code_to_product_scraped.js
+```
+
+This command sets the `DB_PATH` environment variable to point to the `price_scraper.db` file in the root directory and then executes the migration script.
+
 ## Running the Application
 
 The application consists of two main components:

@@ -81,6 +81,9 @@ products_scraped:
                     type: string
                     format: date-time
                     description: Last price update timestamp
+                  referred_code:
+                    type: string
+                    description: Referred code (optional)
       '400':
         description: Bad request
 
@@ -126,6 +129,9 @@ products_scraped_product:
                   type: string
                   format: date-time
                   description: Last price update timestamp
+                referred_code:
+                  type: string
+                  description: Referred code (optional)
       '400':
         description: Bad request
 

@@ -69,6 +69,9 @@ scraper:
               enable:
                 type: integer
                 description: Enable flag (1 for enabled, 0 for disabled)
+              referred_code:
+                type: string
+                description: Referred code (optional)
             required:
               - product_id
               - url_to_scrape
@@ -291,6 +294,9 @@ scraper_id:
                 type: string
                 description: Mode to get HTML (FETCH or RENDER)
                 enum: [FETCH, RENDER]
+              referred_code:
+                type: string
+                description: Referred code (optional)
           example:
             productId: 2
             urlToScrape: "https://www.cyberpuerta.mx/Computo-Hardware/Discos-Duros-SSD-NAS/SSD/SSD-Acer-SA100-120GB-SATA-III-2-5.html"
